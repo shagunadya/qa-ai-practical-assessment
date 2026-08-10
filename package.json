@@ -1,0 +1,18 @@
+{
+  "name": "qa-ai-practical-assessment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "QA AI Practical Assessment — Toolshop Playwright automation",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:ui": "playwright test --project=chromium",
+    "test:api": "playwright test --project=api",
+    "report": "playwright show-report PrismStructure/reports/html"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "dotenv": "^16.4.5"
+  }
+}
