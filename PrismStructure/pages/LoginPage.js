@@ -22,8 +22,14 @@ class LoginPage extends BasePage {
     return this.page.getByTestId('login-submit');
   }
 
+  get signInButton() {
+    return this.submitButton.or(
+      this.page.getByRole('button', { name: /sign in/i }),
+    );
+  }
+
   get errorMessage() {
-    return this.page.getByRole('alert');
+    return this.alertMessage;
   }
 
   async open() {
@@ -34,12 +40,7 @@ class LoginPage extends BasePage {
   async submitCredentials(email, password) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    const submit = this.submitButton;
-    if (await submit.isVisible()) {
-      await submit.click();
-    } else {
-      await this.page.getByRole('button', { name: /sign in/i }).click();
-    }
+    await this.signInButton.click();
   }
 
   async attemptLogin(email, password) {
@@ -53,8 +54,10 @@ class LoginPage extends BasePage {
     });
   }
 
-  accountButton(displayName) {
-    return this.page.getByRole('button', { name: displayName });
+  signedInAs(displayName) {
+    return this.page
+      .getByRole('button', { name: displayName })
+      .or(this.accountMenu);
   }
 }
 

@@ -19,17 +19,13 @@ test.describe('TC-M-08 COD payment selected @regression', () => {
     await cartPage.open();
     await cartPage.proceedToCheckout();
 
-    await checkoutPage.fillBillingAddress(uiData.checkout.billingAddress);
-    await checkoutPage.continueThroughCheckoutSteps();
-    await checkoutPage.selectCashOnDelivery();
-
+    await checkoutPage.prepareCashOnDeliveryPayment(
+      uiData.checkout.billingAddress,
+    );
     expect(await checkoutPage.isCashOnDeliverySelected()).toBeTruthy();
 
-    await checkoutPage.continueThroughCheckoutSteps();
-    await checkoutPage.paymentSuccessMessage.waitFor({
-      state: 'visible',
-      timeout: 60000,
-    });
+    await checkoutPage.clickProceedStep();
+    await checkoutPage.waitForPaymentSuccess();
 
     expect(await checkoutPage.isCashOnDeliverySelected()).toBeTruthy();
     await expect(checkoutPage.confirmOrderButton).toBeVisible();

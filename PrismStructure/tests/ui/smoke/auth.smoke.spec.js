@@ -6,7 +6,6 @@ test.describe('TC-M-01 Registration login profile @smoke', () => {
     registerPage,
     loginPage,
     profilePage,
-    page,
   }) => {
     const user = uiData.buildRegistrationUser();
 
@@ -16,15 +15,11 @@ test.describe('TC-M-01 Registration login profile @smoke', () => {
     await loginPage.open();
     await loginPage.login(user.email, user.password);
 
-    await expect(
-      loginPage.accountButton(user.firstName).or(
-        page.getByTestId('nav-menu'),
-      ),
-    ).toBeVisible();
+    await expect(loginPage.signedInAs(user.firstName)).toBeVisible();
 
     await profilePage.openViaMenu();
-    await expect(profilePage.profileText(user.firstName)).toBeVisible();
-    await expect(profilePage.profileText(user.lastName)).toBeVisible();
-    await expect(profilePage.profileText(user.email)).toBeVisible();
+    await expect(profilePage.profileField(user.firstName)).toBeVisible();
+    await expect(profilePage.profileField(user.lastName)).toBeVisible();
+    await expect(profilePage.profileField(user.email)).toBeVisible();
   });
 });

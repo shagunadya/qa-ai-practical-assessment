@@ -14,6 +14,10 @@ class InvoicesPage extends BasePage {
     return this.page.locator('table tbody tr');
   }
 
+  get invoiceNumberPattern() {
+    return /INV-\d+/;
+  }
+
   async open() {
     await this.goto(this.path);
   }
@@ -28,20 +32,16 @@ class InvoicesPage extends BasePage {
     return this.page.getByRole('row').filter({ hasText: invoiceNumber });
   }
 
-  async hasInvoiceNumber(invoiceNumber) {
-    return this.invoiceRowByNumber(invoiceNumber).isVisible();
-  }
-
-  async waitForInvoiceTable() {
-    await this.invoiceRows.first().waitFor({ state: 'visible', timeout: 30000 });
-  }
-
   async getLatestInvoiceNumber() {
-    await this.waitForInvoiceTable();
+    await this.invoiceRows.first().waitFor({ state: 'visible', timeout: 30000 });
     const row = this.invoiceRows.first();
     const text = await row.innerText();
-    const match = text.match(/INV-\d+/);
+    const match = text.match(this.invoiceNumberPattern);
     return match ? match[0] : text.trim().split(/\s+/)[0];
+  }
+
+  async getInvoiceRowCount() {
+    return this.invoiceRows.count();
   }
 }
 

@@ -15,8 +15,7 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
     await loginPage.open();
     await loginPage.login(seededCredentials.email, seededCredentials.password);
 
-    await productsPage.addProductToCart(productA);
-    await productsPage.addProductToCart(productB);
+    await productsPage.addProductsToCart([productA, productB]);
 
     await cartPage.open();
     await expect(cartPage.lineItemNames).toHaveCount(2, { timeout: 15000 });
@@ -32,8 +31,6 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
     await invoicesPage.openViaMenu();
     const invoiceNumber = await invoicesPage.getLatestInvoiceNumber();
     expect(invoiceNumber).toMatch(uiData.invoice.numberPattern);
-    await expect(
-      invoicesPage.invoiceRowByNumber(invoiceNumber),
-    ).toBeVisible();
+    await expect(invoicesPage.invoiceRowByNumber(invoiceNumber)).toBeVisible();
   });
 });

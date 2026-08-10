@@ -11,7 +11,7 @@ test.describe('TC-M-04 Duplicate registration @regression', () => {
     await registerPage.open();
     await registerPage.register(user);
 
-    await expect(page.getByRole('alert')).toBeVisible({ timeout: 10000 });
+    await expect(registerPage.errorMessage).toBeVisible({ timeout: 10000 });
     await expect(page).toHaveURL(/\/auth\/register/);
   });
 });

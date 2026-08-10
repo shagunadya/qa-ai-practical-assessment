@@ -28,8 +28,6 @@ test.describe('TC-M-06 Single confirm edge @regression', () => {
 
     await expect(checkoutPage.confirmOrderButton).toBeVisible();
     await invoicesPage.openViaMenu();
-
-    const rowCount = await invoicesPage.invoiceRows.count();
-    expect(rowCount).toBe(0);
+    await expect(invoicesPage.invoiceRows).toHaveCount(0);
   });
 });

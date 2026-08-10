@@ -14,13 +14,21 @@ class RegisterPage extends BasePage {
     return this.page.getByTestId('register-submit');
   }
 
+  get errorMessage() {
+    return this.alertMessage;
+  }
+
   async open() {
     await this.goto(this.path);
     await this.form.waitFor({ state: 'visible' });
   }
 
+  fieldByTestId(testId) {
+    return this.page.getByTestId(testId);
+  }
+
   async fillField(testId, value) {
-    const field = this.page.getByTestId(testId);
+    const field = this.fieldByTestId(testId);
     const input = field.locator('input, textarea, select').first();
     if (await input.count()) {
       await input.fill(value);

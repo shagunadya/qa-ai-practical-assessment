@@ -38,11 +38,6 @@ class CartPage extends BasePage {
     const qtyInput = this.quantityInputForProduct(productName);
     await qtyInput.fill(String(quantity));
     await qtyInput.blur();
-    await this.page.waitForTimeout(500);
-  }
-
-  async getLineItemCount() {
-    return this.lineItemNames.count();
   }
 
   async proceedToCheckout() {

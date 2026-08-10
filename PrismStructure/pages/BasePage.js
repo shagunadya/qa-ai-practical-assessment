@@ -1,5 +1,5 @@
 ﻿/**
- * Shared navigation and navigation helpers for Toolshop UI pages.
+ * Shared navigation helpers for Toolshop UI pages.
  */
 class BasePage {
   constructor(page) {
@@ -16,6 +16,10 @@ class BasePage {
 
   get accountMenu() {
     return this.page.getByTestId('nav-menu');
+  }
+
+  get alertMessage() {
+    return this.page.getByRole('alert');
   }
 
   async openCart() {
