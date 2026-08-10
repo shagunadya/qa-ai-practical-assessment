@@ -75,7 +75,7 @@
 
 ## 6. Manual testing approach
 
-- Maintain **15–25 lean cases** in `FunctionalTestCase.csv` (broader than automation cap)
+- Maintain **up to 8 lean cases** in `FunctionalTestCase.csv` (same cap discipline as automation)
 - Columns: Suite (Smoke/Regression), Scenario (Positive/Negative/Edge), AC trace, automation mapping
 - Execute exploratory and manual smoke before locking automation assertions
 - Log defects in `defects/defect-report.md`; distinguish SUT quirks (double Confirm) from defects
@@ -91,7 +91,7 @@
 |-------|--------------|---------|
 | UI smoke | 1–2 | AC2: login → multi-add → qty → COD → **2× Confirm** → My Invoices |
 | API smoke | 2–3 | Flow 1 (register/login/cart) + Flow 2 (products/cart/invoice) |
-| Manual smoke | 3–5 | Same paths; validate UX signals automation cannot see |
+| Manual smoke | 2 | AC1 register/login/profile; AC2 COD with 2× Confirm |
 
 **Gate:** Smoke green before expanding regression or submission.
 
@@ -105,7 +105,7 @@
 |-------|--------------|---------|
 | UI regression | 3–6 | Invalid login; empty-cart guard; single-Confirm edge (R-01) |
 | API regression | 3–5 | 401 without token; invalid login; duplicate register; bad invoice payload |
-| Manual regression | CSV remainder | Registration validation, lockout awareness, extra browse/search cases |
+| Manual regression | up to 6 | Invalid login, duplicate register, empty cart, single Confirm, browse/add, weak password |
 
 Regression runs after smoke passes; failures triaged via `ai-prompts/automation-and-debugging.md`.
 
