@@ -24,12 +24,14 @@ class LoginPage extends BasePage {
 
   get signInButton() {
     return this.submitButton.or(
-      this.page.getByRole('button', { name: /sign in/i }),
+      this.page.getByRole('button', { name: /^login$/i }),
     );
   }
 
   get errorMessage() {
-    return this.alertMessage;
+    return this.alertMessage.or(
+      this.page.getByText(/invalid email or password/i),
+    );
   }
 
   async open() {

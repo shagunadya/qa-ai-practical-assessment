@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { ToolshopApiClient } = require('../../api/ToolshopApiClient');
+const { ToolshopApiClient } = require('../../../api/ToolshopApiClient');
 
 test.describe('API products catalog @smoke', () => {
   test('GET products returns in-stock items @smoke', async ({ request }) => {

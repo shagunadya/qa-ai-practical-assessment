@@ -1,42 +1,33 @@
-const { test, expect } = require('@playwright/test');
-const apiData = require('../../data/api-test-data');
-const { ToolshopApiClient } = require('../../api/ToolshopApiClient');
+const { test, expect } = require('../../../fixtures/api-fixtures');
+const apiData = require('../../../data/api-test-data');
+const {
+  expectInvoiceCreated,
+  expectInvoiceListed,
+} = require('../../../api/api-assertions');
 
 test.describe('API invoice COD @regression', () => {
   test('generate cash-on-delivery invoice from cart @regression', async ({
-    request,
+    cartWithProducts,
   }) => {
-    const client = new ToolshopApiClient(request);
-    const registerBody = apiData.buildRegistrationBody();
+    const { client, cart, products, quantity } = cartWithProducts;
 
-    await client.register(registerBody);
-    await client.login(registerBody.email, registerBody.password);
+    const profileResponse = await client.getProfile();
+    expect(profileResponse.ok()).toBeTruthy();
+    const profile = await profileResponse.json();
+    const billingOverrides = apiData.mapProfileAddressToBilling(profile.address);
+    const invoicePayload = apiData.buildInvoicePayload(cart.id, billingOverrides);
 
-    const products = client.pickInStockProducts(
-      await (await client.getProducts()).json(),
-      1,
-    );
+    expect(invoicePayload.cart_id).toBe(cart.id);
+    expect(invoicePayload.payment_method).toBe(apiData.invoice.paymentMethod);
 
-    const cart = await (await client.createCart()).json();
-    await client.addToCart(
-      cart.id,
-      products[0].id,
-      apiData.cart.initialQuantity,
-    );
-
-    const invoiceResponse = await client.createInvoice(cart.id);
-    expect(invoiceResponse.ok()).toBeTruthy();
-
-    const invoice = await invoiceResponse.json();
-    expect(invoice.invoice_number).toMatch(/INV-/);
-    expect(invoice.payment_method).toBe(apiData.invoice.paymentMethod);
+    const invoiceResponse = await client.createInvoice(cart.id, billingOverrides);
+    const invoice = await expectInvoiceCreated(invoiceResponse, {
+      requestPayload: invoicePayload,
+      products,
+      quantity,
+    });
 
     const listResponse = await client.getInvoices();
-    const listBody = await listResponse.json();
-    const invoices = listBody.data || listBody;
-    const found = invoices.some(
-      (entry) => entry.invoice_number === invoice.invoice_number,
-    );
-    expect(found).toBeTruthy();
+    await expectInvoiceListed(listResponse, invoice);
   });
 });

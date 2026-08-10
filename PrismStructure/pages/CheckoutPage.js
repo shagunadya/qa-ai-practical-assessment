@@ -26,31 +26,42 @@ class CheckoutPage extends BasePage {
   }
 
   async selectCashOnDelivery() {
-    const control = this.cashOnDeliveryControl;
-    await control.waitFor({ state: 'visible' });
+    const paymentMethod = this.page.getByLabel(/payment method/i);
+    if (await paymentMethod.isVisible()) {
+      await paymentMethod.selectOption({ label: 'Cash on Delivery' });
+      return;
+    }
+
     const radio = this.page.getByLabel(/cash on delivery/i);
     if (await radio.isVisible()) {
       await radio.check();
       return;
     }
-    await control.click();
+
+    await this.page.getByText(/cash on delivery/i).click();
   }
 
   /**
-   * @param {{ street: string, city: string, state: string, country: string, postalCode: string }} address
+   * @param {{ street: string, city: string, state: string, country: string, postalCode: string, houseNumber: string }} address
    */
   async fillBillingAddress(address) {
     const fillByLabel = async (label, value) => {
       const field = this.page.getByLabel(label, { exact: false });
       await field.waitFor({ state: 'visible' });
+      const tagName = await field.evaluate((element) => element.tagName);
+      if (tagName === 'SELECT') {
+        await field.selectOption({ label: value });
+        return;
+      }
       await field.fill(value);
     };
 
+    await fillByLabel(/country/i, address.country);
+    await fillByLabel(/postal|zip/i, address.postalCode);
+    await fillByLabel(/house number/i, address.houseNumber);
     await fillByLabel(/street/i, address.street);
     await fillByLabel(/city/i, address.city);
     await fillByLabel(/state/i, address.state);
-    await fillByLabel(/country/i, address.country);
-    await fillByLabel(/postal|zip/i, address.postalCode);
   }
 
   async clickProceedStep() {
@@ -71,10 +82,11 @@ class CheckoutPage extends BasePage {
    * @param {{ street: string, city: string, state: string, country: string, postalCode: string }} address
    */
   async completeCashOnDeliveryCheckout(address) {
+    await this.clickProceedStep();
     await this.fillBillingAddress(address);
     await this.clickProceedStep();
     await this.selectCashOnDelivery();
-    await this.clickProceedStep();
+    await this.confirmOrderButton.click();
     await this.waitForPaymentSuccess();
   }
 
@@ -83,6 +95,7 @@ class CheckoutPage extends BasePage {
    * @param {{ street: string, city: string, state: string, country: string, postalCode: string }} address
    */
   async prepareCashOnDeliveryPayment(address) {
+    await this.clickProceedStep();
     await this.fillBillingAddress(address);
     await this.clickProceedStep();
     await this.selectCashOnDelivery();
@@ -120,11 +133,19 @@ class CheckoutPage extends BasePage {
   }
 
   async isCashOnDeliverySelected() {
+    const paymentMethod = this.page.getByLabel(/payment method/i);
+    if (await paymentMethod.isVisible()) {
+      const selectedOption = paymentMethod.locator('option:checked');
+      const label = (await selectedOption.textContent()) || '';
+      return /cash on delivery/i.test(label);
+    }
+
     const radio = this.page.getByLabel(/cash on delivery/i);
     if (await radio.isVisible()) {
       return radio.isChecked();
     }
-    return await this.cashOnDeliveryControl.isVisible();
+
+    return this.cashOnDeliveryControl.isVisible();
   }
 }
 

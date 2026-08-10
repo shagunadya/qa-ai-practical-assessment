@@ -7,15 +7,21 @@ class ProductsPage extends BasePage {
   }
 
   get searchInput() {
-    return this.page.getByTestId('search-query');
+    return this.page
+      .getByTestId('search-query')
+      .or(this.page.getByRole('textbox', { name: /^search$/i }));
   }
 
   get searchSubmit() {
-    return this.page.getByTestId('search-submit');
+    return this.page
+      .getByTestId('search-submit')
+      .or(this.page.getByRole('button', { name: /^search$/i }));
   }
 
   get productNames() {
-    return this.page.getByTestId('product-name');
+    return this.page
+      .getByTestId('product-name')
+      .or(this.page.getByRole('heading', { level: 5 }));
   }
 
   get addToCartButton() {
@@ -30,7 +36,7 @@ class ProductsPage extends BasePage {
   }
 
   productNameLocator(productName) {
-    return this.productNames.filter({ hasText: productName });
+    return this.page.getByRole('heading', { name: productName, exact: true });
   }
 
   async searchByName(productName) {
@@ -48,8 +54,25 @@ class ProductsPage extends BasePage {
   }
 
   async addProductToCart(productName) {
+    await this.open();
     await this.openProductDetail(productName);
+    await this.clickAddToCartAndWait();
+  }
+
+  async clickAddToCartAndWait() {
+    const lineItemAdd = this.page.waitForResponse(
+      (response) => {
+        const { pathname } = new URL(response.url());
+        return (
+          response.request().method() === 'POST' &&
+          /\/carts\/[^/]+$/.test(pathname) &&
+          response.ok()
+        );
+      },
+      { timeout: 15000 },
+    );
     await this.addToCartButton.click();
+    await lineItemAdd;
   }
 
   /**

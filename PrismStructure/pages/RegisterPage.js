@@ -15,7 +15,9 @@ class RegisterPage extends BasePage {
   }
 
   get errorMessage() {
-    return this.alertMessage;
+    return this.alertMessage.or(
+      this.page.getByText(/email.*(already|taken|registered|exists)/i),
+    );
   }
 
   async open() {
@@ -37,15 +39,53 @@ class RegisterPage extends BasePage {
     await field.fill(value);
   }
 
-  /**
-   * @param {{ firstName: string, lastName: string, email: string, password: string }} user
-   */
-  async register(user) {
+  async fillRegistrationForm(user) {
     await this.fillField('first-name', user.firstName);
     await this.fillField('last-name', user.lastName);
+    await this.page.getByRole('textbox', { name: /date of birth/i }).fill(user.dob);
+    await this.page.getByRole('combobox', { name: /country/i }).selectOption(user.country);
+    await this.page.getByRole('textbox', { name: /postal code/i }).fill(user.postalCode);
+    await this.page.getByRole('textbox', { name: /house number/i }).fill(user.houseNumber);
+    await this.page.getByRole('textbox', { name: /^street$/i }).fill(user.street);
+    await this.page.getByRole('textbox', { name: /^city$/i }).fill(user.city);
+    await this.page.getByRole('textbox', { name: /^state$/i }).fill(user.state);
+    await this.page.getByRole('textbox', { name: /^phone$/i }).fill(user.phone);
     await this.fillField('email', user.email);
     await this.fillField('password', user.password);
+  }
+
+  async submitRegistration() {
     await this.submitButton.click();
+  }
+
+  /**
+   * @param {{
+   *   firstName: string,
+   *   lastName: string,
+   *   email: string,
+   *   password: string,
+   *   dob: string,
+   *   country: string,
+   *   postalCode: string,
+   *   houseNumber: string,
+   *   street: string,
+   *   city: string,
+   *   state: string,
+   *   phone: string,
+   * }} user
+   */
+  async register(user) {
+    await this.fillRegistrationForm(user);
+    await this.submitRegistration();
+    await this.page.waitForURL(
+      (url) => !url.pathname.includes('/auth/register'),
+      { timeout: 30000 },
+    );
+  }
+
+  async attemptRegister(user) {
+    await this.fillRegistrationForm(user);
+    await this.submitRegistration();
   }
 }
 

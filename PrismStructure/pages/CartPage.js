@@ -3,11 +3,13 @@ const { BasePage } = require('./BasePage');
 class CartPage extends BasePage {
   constructor(page) {
     super(page);
-    this.path = '/cart';
+    this.path = '/checkout';
   }
 
   get proceedToCheckoutButton() {
-    return this.page.getByTestId('proceed-1');
+    return this.page
+      .getByTestId('proceed-1')
+      .or(this.page.getByRole('button', { name: /proceed to checkout/i }));
   }
 
   get emptyCartMessage() {
@@ -18,12 +20,24 @@ class CartPage extends BasePage {
     return this.page.getByTestId('cart-total');
   }
 
+  get lineItemRows() {
+    return this.page.getByRole('row').filter({
+      has: this.page.getByRole('spinbutton'),
+    });
+  }
+
   get lineItemNames() {
-    return this.page.getByTestId('product-name');
+    return this.lineItemRows.locator('td').first();
+  }
+
+  async clearLineItems() {
+    while ((await this.lineItemRows.count()) > 0) {
+      await this.lineItemRows.first().locator('button').click();
+    }
   }
 
   async open() {
-    await this.goto(this.path);
+    await this.openCart();
   }
 
   lineItemRow(productName) {

@@ -7,6 +7,14 @@ const registration = {
   firstName: 'John',
   lastName: 'Doe',
   password: 'SuperSecure@123',
+  dob: '1970-01-01',
+  country: 'United States of America (the)',
+  postalCode: '1234AA',
+  houseNumber: '42',
+  street: 'Synthetic Street',
+  city: 'Testville',
+  state: 'Florida',
+  phone: '5551234567',
 };
 
 const seededUser = {
@@ -24,7 +32,15 @@ const duplicateRegistration = {
   firstName: 'Jane',
   lastName: 'Doe',
   email: seededUser.email,
-  password: registration.password,
+  password: 'Qa!DuplicateTest#9',
+  dob: registration.dob,
+  country: registration.country,
+  postalCode: registration.postalCode,
+  houseNumber: registration.houseNumber,
+  street: registration.street,
+  city: registration.city,
+  state: registration.state,
+  phone: registration.phone,
 };
 
 const products = {
@@ -44,8 +60,9 @@ const checkout = {
     street: 'Synthetic Street',
     city: 'Testville',
     state: 'Florida',
-    country: 'United States',
+    country: 'United States of America (the)',
     postalCode: '1234AA',
+    houseNumber: '42',
   },
 };
 
@@ -59,7 +76,15 @@ function buildRegistrationUser(suffix = Date.now()) {
     firstName: registration.firstName,
     lastName: registration.lastName,
     email: `john.doe.${suffix}@example.com`,
-    password: registration.password,
+    password: `Qa!Test${suffix}#9`,
+    dob: registration.dob,
+    country: registration.country,
+    postalCode: registration.postalCode,
+    houseNumber: registration.houseNumber,
+    street: registration.street,
+    city: registration.city,
+    state: registration.state,
+    phone: registration.phone,
   };
 }
 

@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
-const apiData = require('../../data/api-test-data');
-const { ToolshopApiClient } = require('../../api/ToolshopApiClient');
+const apiData = require('../../../data/api-test-data');
+const { ToolshopApiClient } = require('../../../api/ToolshopApiClient');
+const { expectLoginSuccess } = require('../../../api/api-assertions');
 
 test.describe('API login token @smoke', () => {
   test('POST users login returns bearer access token @smoke', async ({
@@ -12,10 +13,6 @@ test.describe('API login token @smoke', () => {
       apiData.seededUser.password,
     );
 
-    expect(response.ok()).toBeTruthy();
-    const body = await response.json();
-    expect(body.access_token).toBeTruthy();
-    expect(body.token_type).toMatch(/bearer/i);
-    expect(client.token).toBe(body.access_token);
+    await expectLoginSuccess(response, client);
   });
 });

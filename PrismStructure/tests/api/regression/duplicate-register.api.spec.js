@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
-const apiData = require('../../data/api-test-data');
-const { ToolshopApiClient } = require('../../api/ToolshopApiClient');
+const apiData = require('../../../data/api-test-data');
+const { ToolshopApiClient } = require('../../../api/ToolshopApiClient');
 
 test.describe('API duplicate register @regression', () => {
   test('POST users register returns conflict for duplicate email @regression', async ({

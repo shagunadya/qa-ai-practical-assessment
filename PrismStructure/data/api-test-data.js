@@ -36,15 +36,21 @@ const cart = {
   updatedQuantity: uiData.cart.updatedQuantity,
 };
 
+const registrationAddress = {
+  street: 'Test street 98',
+  city: 'Vienna',
+  country: 'Austria',
+};
+
 const invoice = {
   paymentMethod: 'cash-on-delivery',
   paymentDetails: {},
   billing: {
-    billing_street: uiData.checkout.billingAddress.street,
-    billing_city: uiData.checkout.billingAddress.city,
-    billing_state: 'Test State',
-    billing_country: 'TS',
-    billing_postal_code: uiData.checkout.billingAddress.postalCode,
+    billing_street: registrationAddress.street,
+    billing_city: registrationAddress.city,
+    billing_state: 'N/A',
+    billing_country: registrationAddress.country,
+    billing_postal_code: '1010',
   },
 };
 
@@ -53,7 +59,27 @@ function buildRegistrationBody(suffix = Date.now()) {
     first_name: registration.firstName,
     last_name: registration.lastName,
     email: `john.doe.${suffix}@example.com`,
-    password: registration.password,
+    password: `Qa!Test${suffix}#9`,
+  };
+}
+
+function buildInvoicePayload(cartId, overrides = {}) {
+  return {
+    cart_id: cartId,
+    payment_method: invoice.paymentMethod,
+    payment_details: invoice.paymentDetails,
+    ...invoice.billing,
+    ...overrides,
+  };
+}
+
+function mapProfileAddressToBilling(address = {}) {
+  return {
+    billing_street: address.street,
+    billing_city: address.city,
+    billing_state: address.state == null ? ' ' : address.state,
+    billing_country: address.country,
+    billing_postal_code: address.postal_code == null ? ' ' : address.postal_code,
   };
 }
 
@@ -65,5 +91,8 @@ module.exports = {
   duplicateRegistration,
   cart,
   invoice,
+  registrationAddress,
   buildRegistrationBody,
+  buildInvoicePayload,
+  mapProfileAddressToBilling,
 };

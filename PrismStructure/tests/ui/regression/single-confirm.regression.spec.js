@@ -1,5 +1,5 @@
-const { test, expect } = require('../../fixtures/test-fixtures');
-const uiData = require('../../data/ui-test-data');
+const { test, expect } = require('../../../fixtures/test-fixtures');
+const uiData = require('../../../data/ui-test-data');
 
 test.describe('TC-M-06 Single confirm edge @regression', () => {
   test('one Confirm does not finalize invoice in My Invoices @regression', async ({

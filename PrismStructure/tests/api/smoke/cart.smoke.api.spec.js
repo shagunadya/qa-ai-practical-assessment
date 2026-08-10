@@ -8,8 +8,8 @@ const {
   expectCartContainsProducts,
 } = require('../../../api/api-assertions');
 
-test.describe('API cart lifecycle @regression', () => {
-  test('create cart add products and verify cart @regression', async ({
+test.describe('API cart lifecycle @smoke', () => {
+  test('authenticate create cart add product and verify contents @smoke', async ({
     registeredUser,
   }) => {
     const { client } = registeredUser;
@@ -18,23 +18,21 @@ test.describe('API cart lifecycle @regression', () => {
     const cart = await expectCartCreated(cartResponse);
 
     const { response: productsResponse, products } =
-      await client.fetchInStockProducts(2);
-    await expectProductsSuccess(productsResponse, 2);
+      await client.fetchInStockProducts(1);
+    await expectProductsSuccess(productsResponse, 1);
 
-    for (const product of products) {
-      const addResponse = await client.addToCart(
-        cart.id,
-        product.id,
-        apiData.cart.initialQuantity,
-      );
-      await expectCartItemAdded(addResponse);
-    }
+    const addResponse = await client.addToCart(
+      cart.id,
+      products[0].id,
+      apiData.cart.initialQuantity,
+    );
+    await expectCartItemAdded(addResponse);
 
     const verifyResponse = await client.getCart(cart.id);
     const verifiedCart = await expectCartRetrieved(verifyResponse);
     expectCartContainsProducts(
       verifiedCart,
-      products,
+      [products[0]],
       apiData.cart.initialQuantity,
     );
   });

@@ -1,18 +1,21 @@
-const { test, expect } = require('@playwright/test');
-const apiData = require('../../data/api-test-data');
-const { ToolshopApiClient } = require('../../api/ToolshopApiClient');
+const { test, expect } = require('../../../fixtures/api-fixtures');
+const {
+  expectRegisterSuccess,
+  expectLoginSuccess,
+} = require('../../../api/api-assertions');
 
 test.describe('API register @regression', () => {
   test('POST users register creates new user @regression', async ({
-    request,
+    apiClient,
+    registrationBody,
   }) => {
-    const client = new ToolshopApiClient(request);
-    const body = apiData.buildRegistrationBody();
+    const registerResponse = await apiClient.register(registrationBody);
+    await expectRegisterSuccess(registerResponse, registrationBody);
 
-    const response = await client.register(body);
-    expect(response.ok()).toBeTruthy();
-
-    const loginResponse = await client.login(body.email, body.password);
-    expect(loginResponse.ok()).toBeTruthy();
+    const loginResponse = await apiClient.login(
+      registrationBody.email,
+      registrationBody.password,
+    );
+    await expectLoginSuccess(loginResponse, apiClient);
   });
 });

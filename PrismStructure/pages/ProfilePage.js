@@ -11,15 +11,22 @@ class ProfilePage extends BasePage {
   }
 
   get profileNavLink() {
-    return this.profileNav.or(
-      this.page.getByRole('link', { name: /profile|account/i }),
-    );
+    return this.page.getByTestId('nav-my-profile');
   }
 
   async openViaMenu() {
+    const accountProfileButton = this.page.getByRole('button', {
+      name: /^profile$/i,
+    });
+    if (await accountProfileButton.isVisible()) {
+      await accountProfileButton.click();
+      await this.page.waitForURL(/profile/);
+      return;
+    }
+
     await this.openAccountMenu();
     await this.profileNavLink.click();
-    await this.page.waitForURL(/account/);
+    await this.page.waitForURL(/profile/);
   }
 
   async open() {
@@ -27,7 +34,9 @@ class ProfilePage extends BasePage {
   }
 
   profileField(text) {
-    return this.page.getByText(text, { exact: false });
+    return this.page
+      .getByText(text, { exact: false })
+      .or(this.page.locator(`input[value="${text}"]`));
   }
 }
 

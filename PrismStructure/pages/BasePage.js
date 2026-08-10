@@ -11,7 +11,9 @@ class BasePage {
   }
 
   get cartLink() {
-    return this.page.getByTestId('nav-cart');
+    return this.page
+      .getByTestId('nav-cart')
+      .or(this.page.getByRole('link', { name: /^cart$/i }));
   }
 
   get accountMenu() {
@@ -23,8 +25,12 @@ class BasePage {
   }
 
   async openCart() {
-    await this.cartLink.click();
-    await this.page.waitForURL(/\/(cart|checkout)/);
+    if (await this.cartLink.isVisible()) {
+      await this.cartLink.click();
+      await this.page.waitForURL(/\/(cart|checkout)/);
+      return;
+    }
+    await this.goto('/checkout');
   }
 
   async openAccountMenu() {

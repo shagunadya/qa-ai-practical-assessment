@@ -1,5 +1,5 @@
-const { test, expect } = require('../../fixtures/test-fixtures');
-const uiData = require('../../data/ui-test-data');
+const { test, expect } = require('../../../fixtures/test-fixtures');
+const uiData = require('../../../data/ui-test-data');
 
 test.describe('TC-M-07 UI API invoice match @regression', () => {
   test('My Invoices entry matches API GET invoices @regression', async ({
