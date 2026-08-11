@@ -3,7 +3,9 @@
 **Assessment:** QA AI Practical Assessment  
 **SUT:** Toolshop v5.0 — UI `https://practicesoftwaretesting.com/` · API `https://api.practicesoftwaretesting.com`  
 **Stack:** Playwright · JavaScript · Prism Framework (`PrismStructure/`)  
-**Author / date:** QA lead · 2026-08-10
+**Author / date:** QA lead · 2026-08-10 (updated 2026-08-11)
+
+**Related:** [`README.md`](README.md) · [`planning.md`](planning.md) · [`test-environments.md`](test-environments.md) · [`test-data-strategy.md`](test-data-strategy.md) · [`traceability-matrix.md`](traceability-matrix.md)
 
 **Basis:** Confirmed UI/API flows, requirement analysis, risk analysis (R-01–R-14).
 
@@ -143,15 +145,18 @@ Regression runs after smoke passes; failures triaged via `ai-prompts/automation-
 
 ## 12. Test data strategy
 
+Detailed data sets, reuse matrix, and dynamic generation rules: **[`test-data-strategy.md`](test-data-strategy.md)**.
+
+Environment variables and SUT URLs: **[`test-environments.md`](test-environments.md)** §5–6.
+
 | Data | Strategy |
 |------|----------|
-| **Users** | Seeded demo for UI smoke **or** register-per-run for API — document choice after exploration |
-| **Credentials** | `.env` / `.env.example` only; never commit secrets |
-| **Products** | ≥2 in-stock anchors stored in `PrismStructure/data/` after exploration |
-| **Invoice** | `payment_method: cash-on-delivery`, `payment_details: {}`, billing fields per OpenAPI |
-| **Cart** | Capture `cart_id` from `POST /carts`; reuse through invoice |
-| **Negatives** | Dedicated invalid email/password; isolated from smoke credentials |
-| **Documentation** | `ai-prompts/test-data.md` + exploration notes |
+| **Users** | Seeded demo for UI smoke; **dynamic registration** for API and isolation-sensitive UI specs |
+| **Credentials** | `.env` / `.env.example`; defaults in `PrismStructure/data/` |
+| **Products** | UI: Combination Pliers, Pliers; API: runtime IDs from `GET /products` |
+| **Invoice** | UI: COD + double Confirm; API: `cash-on-delivery`, profile-mapped billing |
+| **Negatives** | Dedicated invalid password; duplicate email on seeded account |
+| **Prompt trail** | `ai-prompts/test-data.md` (Chains DATA1–DATA5) |
 
 ---
 
@@ -195,6 +200,14 @@ Regression runs after smoke passes; failures triaged via `ai-prompts/automation-
 | Defects | `defects/defect-report.md` | |
 
 **Rule:** Only real execution output — no fake or pre-filled pass results.
+
+---
+
+## 16. Traceability
+
+Requirements → manual cases → automation → risks → data: **[`traceability-matrix.md`](traceability-matrix.md)**.
+
+Planning baseline (scope, ACs, risk register): **[`planning.md`](planning.md)**.
 
 ---
 

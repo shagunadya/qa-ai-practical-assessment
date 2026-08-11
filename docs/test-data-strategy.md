@@ -1,7 +1,10 @@
 # Test Data Strategy — Practice Software Testing Toolshop
 
-**Basis:** Approved manual suite (`FunctionalTestCase.csv`), OpenAPI 5.0.0, risks R-01–R-14  
-**Principles:** Synthetic data only · No real PII · No secrets in repo · UI/API shared modules in `PrismStructure/data/` (when automation added)
+**Author / date:** QA lead · 2026-08-10 (updated 2026-08-11)  
+**Related:** [`test-environments.md`](test-environments.md) · [`traceability-matrix.md`](traceability-matrix.md) · [`../PrismStructure/data/`](../PrismStructure/data/)
+
+**Basis:** Approved manual suite (`FunctionalTestCase.csv`), OpenAPI 5.0.0, risks R-01–R-14, exploration 2026-08-10  
+**Principles:** Synthetic data only · No real PII · No secrets in repo · UI/API shared modules in `PrismStructure/data/`
 
 ---
 
@@ -9,20 +12,20 @@
 
 | Item | Location | Notes |
 |------|----------|-------|
-| Static anchors | `PrismStructure/data/ui-test-data.js`, `api-test-data.js` | After exploration locks product names/IDs |
+| Static anchors | `PrismStructure/data/ui-test-data.js`, `api-test-data.js` | Locked from exploration |
 | Runtime secrets | `.env` (from `.env.example`) | Demo credentials only — never commit `.env` |
-| Exploration anchors | `exploratory-testing/exploratory-notes.md` | Product names, billing field labels, Confirm UX |
+| Exploration anchors | `exploratory-testing/exploratory-notes.md` | Selectors, Confirm UX, product names |
 
-**Environment variables (planned):**
+**Environment variables** (see [`test-environments.md`](test-environments.md) §5):
 
-| Variable | Purpose |
-|----------|---------|
-| `UI_BASE_URL` | `https://practicesoftwaretesting.com` |
-| `API_BASE_URL` | `https://api.practicesoftwaretesting.com` |
-| `TOOLSHOP_UI_EMAIL` | Seeded UI login |
-| `TOOLSHOP_UI_PASSWORD` | Seeded UI login |
-| `TOOLSHOP_API_EMAIL` | API login (may match UI) |
-| `TOOLSHOP_API_PASSWORD` | API login |
+| Variable | Purpose | Default |
+|----------|---------|---------|
+| `UI_BASE_URL` | UI SUT | `https://practicesoftwaretesting.com` |
+| `API_BASE_URL` | API SUT | `https://api.practicesoftwaretesting.com` |
+| `TOOLSHOP_UI_EMAIL` | Seeded UI login | `customer@practicesoftwaretesting.com` |
+| `TOOLSHOP_UI_PASSWORD` | Seeded UI login | `welcome01` |
+| `TOOLSHOP_API_EMAIL` | API login | Same as UI |
+| `TOOLSHOP_API_PASSWORD` | API login | Same as UI |
 
 ---
 
@@ -32,9 +35,9 @@
 |-------|---------|---------|---------------|----------|------------|
 | `first_name` | Valid new user (TC-M-01) | `John` | Valid | Both | Static in data module |
 | `last_name` | Valid new user | `Doe` | Valid | Both | Static |
-| `email` | Unique registrant | `john.doe.{suffix}@example.com` | Valid | Both | **Dynamic** — suffix = `Date.now()` or random 6-digit |
-| `password` | Meets OpenAPI rules | `SuperSecure@123` | Valid | Both | Static (public test pattern, not a production secret) |
-| `dob` | Only if UI requires | `1970-01-01` | Valid | Both | Static optional — **verify** UI form |
+| `email` | Unique registrant | `john.doe.{suffix}@example.com` | Valid | Both | **Dynamic** — `Date.now()` in `buildRegistrationUser()` / `buildRegistrationBody()` |
+| `password` | Meets OpenAPI rules | UI: `SuperSecure@123`; API register: `Qa!Test{suffix}#9` | Valid | Both | UI static; **API dynamic** (breached-password policy rejects common static passwords) |
+| `dob` | Extended registration form | `1970-01-01` | Valid | UI (+ API when required) | Static in `ui-test-data.js` |
 
 **Invalid registration (deferred to API automation / not in manual CSV):** password `short1` (too weak) — use for API 422 if automated.
 
@@ -48,7 +51,7 @@
 |-------|---------|---------|---------------|----------|------------|
 | `email` | Smoke / regression login | `customer@practicesoftwaretesting.com` | Valid | Both | Static — OpenAPI login example |
 | `password` | Paired with seeded email | `welcome01` | Valid | Both | Static — OpenAPI login example |
-| `display_name` | UI profile assertion | _(record during exploration)_ | Valid | UI | Static after exploration |
+| `display_name` | UI profile assertion | `Jane Doe` | Valid | UI | Static — from exploration |
 
 **Usage:** TC-M-02, TC-M-05, TC-M-07, TC-M-08 (primary smoke path). Prefer for UI smoke to avoid register dependency.
 
@@ -87,11 +90,10 @@
 
 | Field | Purpose | Example | Valid/Invalid | UI + API | Generation |
 |-------|---------|---------|---------------|----------|------------|
-| `product_name_a` | UI browse/add (TC-M-02) | _(anchor from exploration)_ | Valid | UI primary | Static after exploration |
-| `product_name_b` | Second line item | _(second in-stock product)_ | Valid | UI primary | Static after exploration |
-| `product_id_a` | API cart add | _(from `GET /products` response)_ | Valid | API primary | **Dynamic** — resolve at runtime from products API |
-| `product_id_b` | Second API line | _(second product id)_ | Valid | API | **Dynamic** |
-| `search_query` | Optional browse | _(if tests use search — not in manual CSV)_ | Valid | UI | Static optional |
+| `product_name_a` | UI browse/add (TC-M-02) | `Combination Pliers` | Valid | UI primary | Static — `products.productA` |
+| `product_name_b` | Second line item | `Pliers` | Valid | UI primary | Static — `products.productB` |
+| `product_id_a` | API cart add | From `GET /products` | Valid | API primary | **Dynamic** — resolved in spec helpers |
+| `product_id_b` | Second API line | From `GET /products` | Valid | API | **Dynamic** |
 
 **Rule:** Lock two in-stock anchors in `exploratory-notes.md` before execution. UI uses **names**; API uses **ids** from same products.
 
@@ -117,9 +119,9 @@
 
 | Field | Purpose | Example | Valid/Invalid | UI + API | Generation |
 |-------|---------|---------|---------------|----------|------------|
-| `payment_method_label` | UI COD selection | `Cash on Delivery` | Valid | UI | Static — **verify** exact label |
+| `payment_method_label` | UI COD selection | `Cash on Delivery` | Valid | UI | Static — `checkout.paymentMethodLabel` |
 | `payment_method_api` | API enum value | `cash-on-delivery` | Valid | API | Static — OpenAPI enum |
-| Billing fields | Address step | _(record during exploration)_ | Valid | UI | Static after exploration |
+| Billing fields (UI) | Address step | Street: `Synthetic Street`, City: `Testville`, State: `Florida`, Country: `United States of America (the)`, Postal: `1234AA` | Valid | UI | Static — `checkout.billingAddress` |
 
 **Empty cart:** No checkout data — cart must be empty (TC-M-05).
 
@@ -169,14 +171,12 @@
 
 | Field | Example | Valid/Invalid | Generation |
 |-------|---------|---------------|------------|
-| `billing_street` | `Synthetic Street` | Valid | Static synthetic |
-| `billing_city` | `Testville` | Valid | Static |
-| `billing_state` | `Test State` | Valid | Static |
-| `billing_country` | `TS` | Valid | Static — **verify** accepted country code |
-| `billing_postal_code` | `1234AA` | Valid | Static |
+| `billing_*` | From `GET /users/me` via `mapProfileAddressToBilling()` | Valid | **Dynamic** — profile address after register |
 | `payment_method` | `cash-on-delivery` | Valid | Static |
 | `payment_details` | `{}` | Valid | Static empty object |
 | `cart_id` | From cart create | Valid | **Dynamic** |
+
+**Note:** Generic synthetic billing (`Testville` / `TS`) fails live geo-validation (422). Invoice specs use **profile-derived billing** — see `api-test-data.js` and Chain DATA4 in `ai-prompts/test-data.md`.
 
 **Header:** `Authorization: Bearer {access_token}` — **dynamic** from login.
 
@@ -212,6 +212,12 @@
 | Optional: entire registered user | API parallel isolation | Register per API test worker |
 
 **Keep static:** COD payment method value, billing synthetic address template, seeded demo user for UI smoke, invalid password string, duplicate email for negative register.
+
+---
+
+## Traceability
+
+Manual TC ↔ data sets ↔ automation: **[`traceability-matrix.md`](traceability-matrix.md)** §6.
 
 ---
 

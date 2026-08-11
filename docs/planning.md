@@ -3,7 +3,7 @@
 **Assessment:** QA AI Practical Assessment  
 **Author / date:** QA lead · 2026-08-10  
 **SUT:** Toolshop — UI `https://practicesoftwaretesting.com` · API `https://api.practicesoftwaretesting.com`  
-**Related docs:** [`test-strategy.md`](test-strategy.md) · [`test-data-strategy.md`](test-data-strategy.md) · [`../FunctionalTestCase.csv`](../FunctionalTestCase.csv) · [`../exploratory-testing/exploratory-notes.md`](../exploratory-testing/exploratory-notes.md)
+**Related docs:** [`README.md`](README.md) · [`test-environments.md`](test-environments.md) · [`traceability-matrix.md`](traceability-matrix.md) · [`../FunctionalTestCase.csv`](../FunctionalTestCase.csv) · [`../exploratory-testing/exploratory-notes.md`](../exploratory-testing/exploratory-notes.md)
 
 This document is the **planning baseline**: scope, risks, acceptance criteria, and traceability from requirements → manual cases → automation.
 
@@ -72,7 +72,7 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | D-03 | UI automation with POM | `PrismStructure/tests/ui/`, `pages/` | Met |
 | D-04 | API automation (Playwright `request`) | `PrismStructure/tests/api/`, `api/` | Met |
 | D-05 | Test data strategy documented | `docs/test-data-strategy.md`, `PrismStructure/data/` | Met |
-| D-06 | AI prompt history + debugging log | `ai-prompts/` | Partial (planning + automation complete; design/data/doc templates open) |
+| D-06 | AI prompt history + debugging log | `ai-prompts/` | Met (iteration chains in `ai-prompts/README.md`) |
 | D-07 | Execution evidence (real runs) | `evidence/reports/` | Met (log + HTML export; see `RUN-MANIFEST.md`) |
 | D-08 | Exploratory testing record | `exploratory-testing/exploratory-notes.md` | Met |
 | D-09 | Responsible AI / project reflection | `project-info.md` | Met |
@@ -109,6 +109,8 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 
 ### 4.1 Manual → automation → risks
 
+Full matrix (including data sets and API spec list): [`traceability-matrix.md`](traceability-matrix.md) §2–6.
+
 | Manual TC | Type | Suite | Scenario ID | UI automation spec | API automation spec | Primary risks |
 |-----------|------|-------|-------------|-------------------|---------------------|---------------|
 | TC-M-01 | Positive | Smoke | SC-AC1-REG-LOGIN-PROFILE | `ui/smoke/auth.smoke.spec.js` | `api/smoke/auth-lifecycle.smoke.api.spec.js` | R-05, R-11 |
@@ -140,7 +142,7 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 |-------------------|----------|
 | Requirements analysis | `ai-prompts/requirements-and-planning.md` (Prompt 01) |
 | Exploratory testing | `exploratory-testing/exploratory-notes.md` |
-| Test strategy & data | `docs/test-strategy.md`, `docs/test-data-strategy.md` |
+| Test strategy & data | `docs/test-strategy.md`, `docs/test-data-strategy.md`, `docs/test-environments.md`, `docs/traceability-matrix.md` |
 | Automation / debugging | `ai-prompts/automation-and-debugging.md` |
 | Execution evidence | `evidence/reports/` |
 | Submission summary | `project-info.md`, `README.md` |
@@ -167,7 +169,6 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | Item | Owner action |
 |------|----------------|
 | Final green full-suite run (D-10) | Re-run `npm test -- --workers=1` when demo account unlocked; update `evidence/reports/` |
-| Backfill AI prompt templates | Complete `ai-prompts/test-design.md`, `test-data.md`, `documentation-and-summary.md` |
 | Test-count cap | Trim `foundation.smoke` or redundant API auth smoke, or document assessor-approved count |
 | Seeded-user tests under lockout | Refactor TC-M-02/03/05/07/08 and `auth.smoke.api` to dynamic users or skip when `423` |
 

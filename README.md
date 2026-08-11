@@ -15,7 +15,7 @@ This repository delivers end-to-end QA artefacts for Toolshop v5.0:
 - **Manual functional tests** — `FunctionalTestCase.csv` (8 cases)
 - **UI automation** — Playwright + Page Object Model (9 automated tests)
 - **API automation** — Playwright `request` API (9 automated tests)
-- **Strategy & data docs** — `docs/test-strategy.md`, `docs/test-data-strategy.md`
+- **Strategy, planning & traceability** — [`docs/README.md`](docs/README.md) (index): [`planning.md`](docs/planning.md), [`test-strategy.md`](docs/test-strategy.md), [`test-environments.md`](docs/test-environments.md), [`test-data-strategy.md`](docs/test-data-strategy.md), [`traceability-matrix.md`](docs/traceability-matrix.md)
 - **Exploratory testing record** — `exploratory-testing/exploratory-notes.md`
 - **AI-assisted workflow log** — `ai-prompts/`
 
@@ -46,7 +46,7 @@ The SUT is a public ecommerce practice site (registration, login, catalog, cart,
 | Positive, negative, and edge scenarios | Cross-browser beyond Chromium |
 | AI prompt history and responsible-use documentation | Full OpenAPI surface |
 
-**Test caps (assessment guideline):** 5–8 automated tests per layer (UI and API, smoke + regression combined). Current counts are 9 per layer (includes a UI foundation connectivity check and an extra API smoke split). See [`docs/test-strategy.md`](docs/test-strategy.md) for full scope.
+**Test caps (assessment guideline):** 5–8 automated tests per layer (UI and API, smoke + regression combined). Current counts are 9 per layer (includes a UI foundation connectivity check and an extra API smoke split). See [`docs/test-strategy.md`](docs/test-strategy.md) and [`docs/traceability-matrix.md`](docs/traceability-matrix.md).
 
 ---
 
@@ -118,14 +118,19 @@ qa-ai-practical-assessment/
 │   │       └── regression/       # register, login, cart, invoice, …
 │   └── reports/html/             # Generated Playwright HTML report (gitignored)
 ├── docs/
+│   ├── README.md                 # Documentation index
+│   ├── planning.md               # Scope, risks, ACs
 │   ├── test-strategy.md
-│   └── test-data-strategy.md
+│   ├── test-environments.md      # SUT URLs, Playwright config, workers
+│   ├── test-data-strategy.md
+│   └── traceability-matrix.md    # Manual → automation → risks → data
 ├── ai-prompts/                   # AI prompt history
 ├── exploratory-testing/
 │   └── exploratory-notes.md
 ├── defects/
 │   └── defect-report.md
-├── evidence/                     # Planned execution evidence (currently empty)
+├── evidence/
+│   └── reports/                  # Exported run logs and HTML report copies
 └── test-results/                 # Playwright run artefacts (gitignored)
 ```
 
@@ -375,7 +380,7 @@ Both `PrismStructure/reports/html/` and `test-results/` are gitignored; reports 
 |----------|----------|--------|
 | Playwright HTML report | `PrismStructure/reports/html/` | Generated on test run (`npm run report` to view) |
 | Failure screenshots & traces | `test-results/` | Generated on failure |
-| Planned submission evidence | `evidence/` | Folder exists; **currently empty** (see `docs/test-strategy.md` §15) |
+| Submission evidence | `evidence/reports/` | Log + HTML export + `RUN-MANIFEST.md` (see `docs/test-strategy.md` §15) |
 | Exploratory record | `exploratory-testing/exploratory-notes.md` | Populated |
 | AI session log | `ai-prompts/automation-and-debugging.md` | Populated |
 
