@@ -6,7 +6,7 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 |----------|---------|--------------|
 | [`planning.md`](planning.md) | Scope, risk register (R-01–R-14), acceptance criteria, planning decisions | Start here for assessment baseline |
 | [`requirements-and-planning.md`](requirements-and-planning.md) | **Requirements**, FR/AC definitions, scope matrix, traceability approach | Assessor requirements review |
-| [`test-strategy.md`](test-strategy.md) | Test levels, UI/API/manual approach, smoke/regression mix, execution & evidence | How we test and what we automate |
+| [`test-strategy.md`](test-strategy.md) | **Test strategy** — objectives, levels, types, UI/API approach, entry/exit, execution | How we test and what is implemented |
 | [`test-environments.md`](test-environments.md) | SUT URLs, local setup, Playwright projects, workers, secrets, lockout risks | Before first run or CI setup |
 | [`test-data-strategy.md`](test-data-strategy.md) | Data sets per scenario, static vs dynamic, UI/API modules, reuse rules | When writing or debugging tests |
 | [`limitations-and-gaps.md`](limitations-and-gaps.md) | Known constraints, automation weak spots, residual submission gaps | Submission honesty review |
