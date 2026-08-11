@@ -5,6 +5,7 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | Document | Purpose | When to read |
 |----------|---------|--------------|
 | [`planning.md`](planning.md) | Scope, risk register (R-01–R-14), acceptance criteria, planning decisions | Start here for assessment baseline |
+| [`requirements-and-planning.md`](requirements-and-planning.md) | **Requirements**, FR/AC definitions, scope matrix, traceability approach | Assessor requirements review |
 | [`test-strategy.md`](test-strategy.md) | Test levels, UI/API/manual approach, smoke/regression mix, execution & evidence | How we test and what we automate |
 | [`test-environments.md`](test-environments.md) | SUT URLs, local setup, Playwright projects, workers, secrets, lockout risks | Before first run or CI setup |
 | [`test-data-strategy.md`](test-data-strategy.md) | Data sets per scenario, static vs dynamic, UI/API modules, reuse rules | When writing or debugging tests |
@@ -34,6 +35,7 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | What is the test strategy? | Exploratory → manual → UI/API automation; risk-based caps | [`test-strategy.md`](test-strategy.md) |
 | Which environment do tests hit? | Public Toolshop practice site (UI + API); Chromium locally | [`test-environments.md`](test-environments.md) |
 | How is test data managed? | `PrismStructure/data/` + `.env`; dynamic users for isolation | [`test-data-strategy.md`](test-data-strategy.md) |
-| Where are manual cases (pos/neg/edge)? | 8 cases in CSV + readable suite doc | [`manual-test-suite.md`](manual-test-suite.md) |
+| Where are manual cases (pos/neg/edge)? | 11 cases in CSV + readable suite doc | [`manual-test-suite.md`](manual-test-suite.md) |
+| Where are functional requirements? | FR/AC baseline | [`requirements-and-planning.md`](requirements-and-planning.md) |
 | Where are limitations & gaps? | Consolidated doc | [`limitations-and-gaps.md`](limitations-and-gaps.md) |
 | Where is execution evidence? | Logs + HTML in `evidence/reports/` | [`../evidence/EXECUTION-DEMO.md`](../evidence/EXECUTION-DEMO.md) |
