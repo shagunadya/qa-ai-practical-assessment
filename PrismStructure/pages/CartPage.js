@@ -1,4 +1,5 @@
 const { BasePage } = require('./BasePage');
+const { parseMoney } = require('../utils/money');
 
 class CartPage extends BasePage {
   constructor(page) {
@@ -31,9 +32,17 @@ class CartPage extends BasePage {
   }
 
   async clearLineItems() {
-    while ((await this.lineItemRows.count()) > 0) {
-      await this.lineItemRows.first().locator('button').click();
+    await this.open();
+    let remaining = await this.lineItemRows.count();
+    while (remaining > 0) {
+      await this.lineItemRows.first().getByRole('button').click();
+      remaining = await this.lineItemRows.count();
     }
+  }
+
+  async emptyCart() {
+    await this.clearLineItems();
+    await this.emptyCartMessage.waitFor({ state: 'visible', timeout: 15000 });
   }
 
   async open() {
@@ -56,6 +65,17 @@ class CartPage extends BasePage {
 
   async proceedToCheckout() {
     await this.proceedToCheckoutButton.click();
+  }
+
+  async getCartTotalAmount() {
+    await this.cartTotal.waitFor({ state: 'visible', timeout: 15000 });
+    const text = await this.cartTotal.innerText();
+    return parseMoney(text);
+  }
+
+  async getLineItemQuantity(productName) {
+    const value = await this.quantityInputForProduct(productName).inputValue();
+    return Number(value);
   }
 }
 

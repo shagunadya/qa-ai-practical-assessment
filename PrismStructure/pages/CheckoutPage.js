@@ -1,3 +1,4 @@
+const { expect } = require('@playwright/test');
 const { BasePage } = require('./BasePage');
 
 class CheckoutPage extends BasePage {
@@ -77,6 +78,17 @@ class CheckoutPage extends BasePage {
     });
   }
 
+  async getInvoiceNumberFromConfirmation() {
+    const message = this.page.getByText(/invoice number is/i);
+    await message.waitFor({ state: 'visible', timeout: 30000 });
+    const text = await message.innerText();
+    const match = text.match(/INV-\d+/);
+    if (!match) {
+      throw new Error(`Invoice number not found in confirmation text: ${text}`);
+    }
+    return match[0];
+  }
+
   /**
    * Billing → payment step → COD → success message (TC-M-02, M-06, M-07).
    * @param {{ street: string, city: string, state: string, country: string, postalCode: string }} address
@@ -101,35 +113,53 @@ class CheckoutPage extends BasePage {
     await this.selectCashOnDelivery();
   }
 
-  async clickConfirmOnce() {
+  /**
+   * First Confirm after payment success — invoice must not finalize yet (R-01).
+   */
+  async clickFirstConfirm() {
     await this.waitForPaymentSuccess();
     await this.confirmOrderButton.waitFor({ state: 'visible' });
     await this.confirmOrderButton.click();
+    await expect(this.confirmOrderButton).toBeVisible({ timeout: 15000 });
   }
 
   /**
-   * Toolshop requires Confirm twice before invoice is created (R-01).
+   * @returns {Promise<{ status: number | null, body: object | null }>}
    */
   async confirmOrderTwice() {
     await this.waitForPaymentSuccess();
     await this.confirmOrderButton.waitFor({ state: 'visible' });
 
-    const invoiceResponse = this.page.waitForResponse(
-      (response) =>
-        response.url().includes('/invoices') &&
-        response.request().method() === 'POST',
-      { timeout: 60000 },
-    );
+    const invoiceResponsePromise = this.page
+      .waitForResponse(
+        (response) =>
+          /\/invoices/.test(response.url()) &&
+          response.request().method() === 'POST',
+        { timeout: 60000 },
+      )
+      .catch(() => null);
 
     await this.confirmOrderButton.click();
     await this.confirmOrderButton.waitFor({ state: 'visible' });
     await this.confirmOrderButton.click();
 
-    try {
-      await invoiceResponse;
-    } catch {
-      // Invoice POST may not be observable on every UI path.
+    const response = await invoiceResponsePromise;
+    if (!response) {
+      return { status: null, body: null };
     }
+
+    const status = response.status();
+    if (status === 201) {
+      return { status, body: await response.json() };
+    }
+
+    return { status, body: null };
+  }
+
+  async clickConfirmOnce() {
+    await this.waitForPaymentSuccess();
+    await this.confirmOrderButton.waitFor({ state: 'visible' });
+    await this.confirmOrderButton.click();
   }
 
   async isCashOnDeliverySelected() {

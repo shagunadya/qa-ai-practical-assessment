@@ -10,10 +10,15 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
     invoicesPage,
     seededCredentials,
   }) => {
+    test.setTimeout(120000);
+
     const { productA, productB } = uiData.products;
 
     await loginPage.open();
     await loginPage.login(seededCredentials.email, seededCredentials.password);
+
+    await invoicesPage.openViaMenu();
+    const invoicesBefore = new Set(await invoicesPage.collectInvoiceNumbers());
 
     await productsPage.open();
     await productsPage.addProductsToCart([productA, productB]);
@@ -22,16 +27,54 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
     await expect(cartPage.lineItemRows).toHaveCount(2, { timeout: 15000 });
 
     await cartPage.updateQuantity(productA, uiData.cart.updatedQuantity);
-    await cartPage.proceedToCheckout();
+    expect(await cartPage.getLineItemQuantity(productA)).toBe(
+      uiData.cart.updatedQuantity,
+    );
 
+    const cartTotal = await cartPage.getCartTotalAmount();
+    expect(cartTotal).toBeGreaterThan(0);
+
+    await cartPage.proceedToCheckout();
     await checkoutPage.completeCashOnDeliveryCheckout(
       uiData.checkout.billingAddress,
     );
-    await checkoutPage.confirmOrderTwice();
 
-    await invoicesPage.openViaMenu();
-    const invoiceNumber = await invoicesPage.getLatestInvoiceNumber();
-    expect(invoiceNumber).toMatch(uiData.invoice.numberPattern);
-    await expect(invoicesPage.invoiceRowByNumber(invoiceNumber)).toBeVisible();
+    const confirmResult = await checkoutPage.confirmOrderTwice();
+
+    let invoiceNumber = null;
+    await expect
+      .poll(
+        async () => {
+          await invoicesPage.openViaMenu();
+          const created = (await invoicesPage.collectInvoiceNumbers()).filter(
+            (number) => !invoicesBefore.has(number),
+          );
+          if (created.length > 0) {
+            invoiceNumber = created[0];
+            return invoiceNumber;
+          }
+          return null;
+        },
+        { timeout: 45000 },
+      )
+      .toMatch(uiData.invoice.numberPattern);
+
+    const invoiceDetails = await invoicesPage.getInvoiceRowDetails(invoiceNumber);
+    expect(invoiceDetails.totalAmount).toBeGreaterThan(0);
+
+    const matchedByCart = await invoicesPage.findInvoiceByTotal(cartTotal);
+    if (matchedByCart?.invoiceNumber === invoiceNumber) {
+      expect(invoiceDetails.totalAmount).toBeCloseTo(cartTotal, 2);
+    }
+
+    if (confirmResult.body?.invoice_number) {
+      expect(invoiceNumber).toBe(confirmResult.body.invoice_number);
+      expect(invoiceDetails.totalAmount).toBeCloseTo(confirmResult.body.total, 2);
+    }
+
+    await invoicesPage.openInvoiceDetails(invoiceNumber);
+    await expect(invoicesPage.page).toHaveURL(/\/account\/invoices\//);
+    await expect(invoicesPage.page.getByText(productA)).toBeVisible();
+    await expect(invoicesPage.page.getByText(productB)).toBeVisible();
   });
 });

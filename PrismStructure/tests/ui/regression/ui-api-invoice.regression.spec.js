@@ -3,22 +3,27 @@ const uiData = require('../../../data/ui-test-data');
 
 test.describe('TC-M-07 UI API invoice match @regression', () => {
   test('My Invoices entry matches API GET invoices @regression', async ({
+    registerPage,
     loginPage,
     productsPage,
     cartPage,
     checkoutPage,
     invoicesPage,
     apiClient,
-    seededCredentials,
   }) => {
-    await loginPage.open();
-    await loginPage.login(
-      seededCredentials.email,
-      seededCredentials.password,
-    );
+    const user = uiData.buildRegistrationUser();
+
+    await registerPage.open();
+    await registerPage.register(user);
+
+    if (!(await loginPage.accountMenu.isVisible())) {
+      await loginPage.open();
+      await loginPage.login(user.email, user.password);
+    }
 
     await productsPage.addProductToCart(uiData.products.productSingle);
     await cartPage.open();
+    const cartTotal = await cartPage.getCartTotalAmount();
     await cartPage.proceedToCheckout();
     await checkoutPage.completeCashOnDeliveryCheckout(
       uiData.checkout.billingAddress,
@@ -26,12 +31,12 @@ test.describe('TC-M-07 UI API invoice match @regression', () => {
     await checkoutPage.confirmOrderTwice();
 
     await invoicesPage.openViaMenu();
-    const invoiceNumber = await invoicesPage.getLatestInvoiceNumber();
+    const invoiceDetails = await invoicesPage.findInvoiceByTotal(cartTotal);
+    expect(invoiceDetails).toBeTruthy();
 
-    const loginResponse = await apiClient.login(
-      seededCredentials.email,
-      seededCredentials.password,
-    );
+    const { invoiceNumber } = invoiceDetails;
+
+    const loginResponse = await apiClient.login(user.email, user.password);
     expect(loginResponse.ok()).toBeTruthy();
 
     const invoicesResponse = await apiClient.getInvoices();
@@ -45,5 +50,8 @@ test.describe('TC-M-07 UI API invoice match @regression', () => {
 
     expect(match).toBeTruthy();
     expect(match.invoice_number).toBe(invoiceNumber);
+    expect(match.total).toBeGreaterThan(0);
+    expect(invoiceDetails.totalAmount).toBeCloseTo(match.total, 2);
+    expect(invoiceDetails.totalAmount).toBeCloseTo(cartTotal, 2);
   });
 });
