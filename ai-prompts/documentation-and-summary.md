@@ -90,6 +90,8 @@ Prompts used for README, execution evidence, reflection, and submission packagin
 - [ ] UI + API automation green (open — see evidence manifest)
 - [x] `evidence/` — run logs / HTML report exported
 - [x] `ai-prompts/` — prompt history with iteration chains
-- [ ] `.cursor/rules/` — Cursor artifacts _(not added)_
+- [ ] `.cursor/rules/` — Cursor artifacts — **Met** ([`.cursor/README.md`](.cursor/README.md))
 - [x] Public repo URL shared
 - [x] `docs/planning.md` — scope, risks, ACs, traceability
+- [x] `docs/limitations-and-gaps.md` — limitations and residual gaps
+- [x] `evidence/EXECUTION-DEMO.md` — execution demo index

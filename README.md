@@ -130,8 +130,10 @@ qa-ai-practical-assessment/
 │   └── exploratory-notes.md
 ├── defects/
 │   └── defect-report.md
+├── .cursor/                      # Cursor rules + skills (see .cursor/README.md)
 ├── evidence/
-│   └── reports/                  # Exported run logs and HTML report copies
+│   ├── EXECUTION-DEMO.md         # How to view / re-run demo artefacts
+│   └── reports/                  # Logs + HTML report copies
 └── test-results/                 # Playwright run artefacts (gitignored)
 ```
 
@@ -457,17 +459,18 @@ Defect log: [`defects/defect-report.md`](defects/defect-report.md)
 
 ## 22. Known limitations
 
+Full list: [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md). Summary:
+
 | Limitation | Detail |
 |------------|--------|
-| **Shared demo environment** | Public Toolshop is shared; parallel runs or repeated failed logins can cause flakiness or account lockout (423). API project uses `workers: 1`; consider serial UI runs if flaky. |
-| **Assessment test cap** | Guideline is 5–8 tests per automated layer; repo has 9 UI and 9 API tests. |
-| **Chromium only** | No Firefox/WebKit projects configured. |
-| **No CI pipeline** | Tests run locally only; no GitHub Actions workflow in repo. |
-| **Evidence folder empty** | `evidence/` not yet populated; HTML reports must be generated locally. |
-| **Live SUT drift** | UI checkout steps and API validation rules can differ from OpenAPI docs; tests were adjusted to observed behaviour (see `ai-prompts/automation-and-debugging.md`). |
-| **Incomplete prompt templates** | `test-design.md` and `test-data.md` are checklists; substantive content is in `docs/` and `automation-and-debugging.md`. |
-| **Password policy** | API registration rejects common passwords (e.g. breached-password list); dynamic passwords are generated in `buildRegistrationBody()`. |
-| **Gitignored reports** | `PrismStructure/reports/html/` is not committed; regenerate after clone with `npm test` then `npm run report`. |
+| **Shared demo environment** | Public Toolshop; lockout (`423`) and cart pollution — use `--workers=1` and dynamic users |
+| **Assessment test cap** | Guideline 5–8/layer; repo has 9 UI + 9 API tests |
+| **Chromium only** | No Firefox/WebKit projects |
+| **No CI pipeline** | Local runs only |
+| **Execution evidence** | Committed under `evidence/reports/` — see [`evidence/EXECUTION-DEMO.md`](evidence/EXECUTION-DEMO.md) |
+| **Live SUT drift** | UI/API behaviour adjusted after live runs — see `ai-prompts/automation-and-debugging.md` |
+| **Cursor config** | [`.cursor/rules/`](.cursor/rules/) and [`.cursor/skills/`](.cursor/skills/) |
+| **Full suite green** | Smoke 7/7 evidenced; full 18-test suite may fail on shared env (honest logs retained) |
 
 ---
 

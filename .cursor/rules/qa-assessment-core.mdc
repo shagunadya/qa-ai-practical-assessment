@@ -1,0 +1,36 @@
+---
+description: QA AI assessment scope, evidence discipline, and responsible AI defaults
+alwaysApply: true
+---
+
+# QA Assessment — Core Rules
+
+## Scope
+
+- **SUT:** Practice Software Testing Toolshop v5.0 (public UI + API).
+- **Stack:** Playwright + JavaScript + Prism Framework under `PrismStructure/`.
+- **Deliverables:** Manual cases, UI/API automation, strategy docs, `ai-prompts/`, `evidence/`.
+
+## Before changing tests
+
+1. Read `docs/planning.md` risks (R-01–R-14) and `docs/manual-test-suite.md` for TC-M-0x mapping.
+2. Use npm scripts from `package.json` only — do not invent Playwright CLI flags.
+3. Prefer dynamic registration over shared `customer@…` when tests mutate auth state.
+4. UI invoice flow requires **two Confirm** clicks (R-01) — see `CheckoutPage.confirmOrderTwice()`.
+
+## Evidence and honesty
+
+- Export real run output to `evidence/reports/` — never hand-edit pass/fail.
+- Document failures and environmental causes (lockout `423`, shared demo cart).
+- Update `evidence/reports/RUN-MANIFEST.md` when adding new runs.
+
+## Security
+
+- Never commit `.env`, tokens, or production secrets.
+- Public demo credentials are SUT fixtures — load via `.env.example` keys only.
+
+## Documentation
+
+- Strategy: `docs/test-strategy.md`, `docs/limitations-and-gaps.md`
+- Traceability: `docs/traceability-matrix.md`
+- Prompt history: `ai-prompts/README.md`

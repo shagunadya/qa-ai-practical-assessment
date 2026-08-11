@@ -321,12 +321,11 @@ flowchart LR
 - Exploratory notes can stale quickly; screenshots and runs must override notes.
 - Parallel workers against a shared demo site increased flakiness — `--workers=1` should be default earlier.
 
-**Gaps in this submission**
+**Gaps in this submission (see [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md))**
 
-- `evidence/` folder is **empty** (HTML report exists under `PrismStructure/reports/html/`; screenshots not yet packaged per `docs/test-strategy.md` §15).
-- `ai-prompts/test-design.md` and `test-data.md` are templates; `documentation-and-summary.md` checklist incomplete.
-- No root `README.md`; no CI pipeline.
-- Full UI + API suite green run should be re-executed and captured before final submission.
+- Full 18-test suite green on shared SUT remains **open**; smoke **7/7** and regression **10/11** evidenced in `evidence/reports/`.
+- Cursor rules/skills added under `.cursor/`; execution demo in `evidence/EXECUTION-DEMO.md`.
+- No CI pipeline; Chromium-only configuration.
 
 **Overall**
 

@@ -58,4 +58,4 @@ Each iteration block uses:
 
 - Chains **P3/P4** in planning were drafted as prompts before exploration; outcomes were recorded after `exploratory-notes.md` and implementation (not live chat transcripts for every word).
 - **Chain AUTO-A** session outcome (5/5 smoke) is from 2026-08-10; later runs (2026-08-11) hit demo account lockout — see `evidence/reports/RUN-MANIFEST.md`.
-- Templates marked **partial** in the submission checklist (e.g. `.cursor/rules/`, green full-suite run) reflect items still open — see [`documentation-and-summary.md`](documentation-and-summary.md).
+- Templates marked **partial** in the submission checklist (e.g. full 18-test green run) reflect items still open — see [`documentation-and-summary.md`](documentation-and-summary.md) and [`docs/limitations-and-gaps.md`](../docs/limitations-and-gaps.md).

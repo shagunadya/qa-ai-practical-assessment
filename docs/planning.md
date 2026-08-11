@@ -73,7 +73,7 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | D-04 | API automation (Playwright `request`) | `PrismStructure/tests/api/`, `api/` | Met |
 | D-05 | Test data strategy documented | `docs/test-data-strategy.md`, `PrismStructure/data/` | Met |
 | D-06 | AI prompt history + debugging log | `ai-prompts/` | Met (iteration chains in `ai-prompts/README.md`) |
-| D-07 | Execution evidence (real runs) | `evidence/reports/` | Met (log + HTML export; see `RUN-MANIFEST.md`) |
+| D-07 | Execution evidence (real runs) | `evidence/reports/` | Met (smoke 7/7, regression, UI, full-suite logs + HTML; see `EXECUTION-DEMO.md`) |
 | D-08 | Exploratory testing record | `exploratory-testing/exploratory-notes.md` | Met |
 | D-09 | Responsible AI / project reflection | `project-info.md` | Met |
 | D-10 | **All automated tests pass** on final submission run | Playwright exit code 0 | **Open** — evidence run recorded failures (lockout/network); re-run when SUT stable |

@@ -1,0 +1,38 @@
+---
+description: Playwright POM, fixtures, and API client conventions for PrismStructure
+globs: PrismStructure/**/*
+alwaysApply: false
+---
+
+# Playwright / Prism Conventions
+
+## Layout
+
+- `pages/` — Page Object Model (extend `BasePage`)
+- `tests/ui/smoke|regression/` — UI specs tagged `@smoke` / `@regression`
+- `tests/api/smoke|regression/` — `*.api.spec.js` for API project
+- `data/` — `ui-test-data.js`, `api-test-data.js` (single source of test data)
+- `fixtures/` — `test-fixtures.js`, `api-fixtures.js`
+- `api/` — `ToolshopApiClient`, `api-assertions.js`
+
+## UI tests
+
+- Import `test`/`expect` from `fixtures/test-fixtures.js`, not `@playwright/test` directly.
+- Map `describe` blocks to manual TC IDs (e.g. `TC-M-02`).
+- Selectors: prefer `data-test` (`testIdAttribute` in config).
+- Logout: account menu → **Sign out** text (`BasePage.logout()`).
+
+## API tests
+
+- Use `ToolshopApiClient` + `api-assertions.js` — assert only OpenAPI-confirmed fields.
+- Invoice create expects **201** (not 200). Use profile-mapped billing for `POST /invoices`.
+- API project runs with `workers: 1` in `playwright.config.js`.
+
+## Assertions
+
+- Strengthen checkout: qty update, cart total, new invoice detection, invoice detail page line items.
+- Do not swallow invoice POST failures silently — capture status when observable.
+
+## Caps
+
+Assessment guideline: 5–8 automated tests per layer (smoke + regression combined). Current: 9 UI + 9 API — document if adding specs.

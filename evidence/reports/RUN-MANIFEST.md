@@ -1,31 +1,56 @@
-# Execution Evidence — Smoke Suite Run
+# Execution Evidence — Run Manifest
 
-| Field | Value |
-|-------|-------|
-| **Date** | 2026-08-11 |
-| **Command** | `npm run test:smoke -- --workers=1` |
-| **Playwright** | via `package.json` → `playwright test --grep @smoke` |
-| **Exit code** | 0 |
-| **Result** | **7 passed** / 0 failed |
-| **Duration** | ~1.1 minutes |
+**Repo:** qa-ai-practical-assessment  
+**SUT:** https://practicesoftwaretesting.com · https://api.practicesoftwaretesting.com  
+**Demo guide:** [`../EXECUTION-DEMO.md`](../EXECUTION-DEMO.md)
 
-## Artefacts in this folder
+---
 
-| File / folder | Description |
-|---------------|-------------|
-| `smoke_2026-08-11.log` | Console output from green smoke run |
-| `playwright-html-report_2026-08-11_smoke/` | Playwright HTML report (`index.html` + `data/`) |
-| `full-suite_2026-08-11_1748.log` | Prior full-suite run (10 pass / 8 fail) |
-| `playwright-html-report_2026-08-11_1748/` | Prior full-suite HTML report |
+## Latest runs (2026-08-11)
 
-## View HTML report locally
+| Suite | Command | Exit | Result | Duration | Log | HTML report |
+|-------|---------|------|--------|----------|-----|-------------|
+| **Smoke** | `npm run test:smoke -- --workers=1` | 0 | **7/7 passed** | ~1 min | [`smoke_2026-08-11.log`](smoke_2026-08-11.log) | [`playwright-html-report_2026-08-11_smoke/`](playwright-html-report_2026-08-11_smoke/index.html) |
+| **Regression** | `npm run test:regression -- --workers=1` | 1 | **10/11 passed** | ~1.5 min | [`regression_2026-08-11.log`](regression_2026-08-11.log) | [`playwright-html-report_2026-08-11_regression/`](playwright-html-report_2026-08-11_regression/index.html) |
+| **UI** | `npm run test:ui -- --workers=1` | 1 | **7/9 passed** (2 failed) | ~3.8 min | [`ui_2026-08-11.log`](ui_2026-08-11.log) | [`playwright-html-report_2026-08-11_ui/`](playwright-html-report_2026-08-11_ui/index.html) |
+
+### UI failure summary
+
+| Spec | Likely cause |
+|------|----------------|
+| `checkout.smoke.spec.js` (TC-M-02) | Shared demo cart / invoice timing |
+| `ui-api-invoice.regression.spec.js` (TC-M-07) | Invoice total match on dynamic user |
+
+### Regression failure summary
+
+| Spec | Likely cause |
+|------|----------------|
+| `ui-api-invoice.regression.spec.js` (TC-M-07) | Invoice total not found / timing on shared demo — see log |
+
+### UI run note
+
+See [`ui_2026-08-11.log`](ui_2026-08-11.log) for pass/fail breakdown. Serial run on shared SUT; invalid-login and seeded-user specs may fail under lockout.
+
+---
+
+## Historical runs
+
+| Suite | Command | Exit | Result | Artefacts |
+|-------|---------|------|--------|-----------|
+| Full suite | `npm test -- --workers=1` | 1 | 10 pass / 8 fail | [`full-suite_2026-08-11_1748.log`](full-suite_2026-08-11_1748.log), [`playwright-html-report_2026-08-11_1748/`](playwright-html-report_2026-08-11_1748/index.html) |
+
+---
+
+## View reports
 
 ```bash
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_smoke
+npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_regression
+npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_ui
 ```
 
-Or open `playwright-html-report_2026-08-11_smoke/index.html` in a browser.
+---
 
-## Note
+## Honesty policy
 
-Smoke suite green after assertion hardening (registration, logout, double Confirm, invoice details). Full regression suite not re-run in this export — see prior manifest for full-suite status.
+Only **real** Playwright output is stored here. Failed runs are kept alongside green smoke evidence. Do not hand-edit pass/fail in logs or HTML.

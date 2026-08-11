@@ -8,7 +8,8 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | [`test-strategy.md`](test-strategy.md) | Test levels, UI/API/manual approach, smoke/regression mix, execution & evidence | How we test and what we automate |
 | [`test-environments.md`](test-environments.md) | SUT URLs, local setup, Playwright projects, workers, secrets, lockout risks | Before first run or CI setup |
 | [`test-data-strategy.md`](test-data-strategy.md) | Data sets per scenario, static vs dynamic, UI/API modules, reuse rules | When writing or debugging tests |
-| [`traceability-matrix.md`](traceability-matrix.md) | Requirements → manual TC → UI/API specs → risks → data | Audits, coverage reviews, assessor handoff |
+| [`limitations-and-gaps.md`](limitations-and-gaps.md) | Known constraints, automation weak spots, residual submission gaps | Submission honesty review |
+| [`traceability-matrix.md`](traceability-matrix.md) | Requirements → manual TC → UI/API specs → risks → data | Audits, coverage reviews |
 | [`manual-test-suite.md`](manual-test-suite.md) | **Manual test cases** — steps, data, expected results; negative/edge catalog | Manual execution and assessor review |
 
 **Related (outside `docs/`):**
@@ -19,7 +20,8 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | Exploratory findings | [`../exploratory-testing/exploratory-notes.md`](../exploratory-testing/exploratory-notes.md) |
 | Automation code | [`../PrismStructure/`](../PrismStructure/) |
 | AI prompt history | [`../ai-prompts/`](../ai-prompts/) |
-| Execution evidence | [`../evidence/reports/`](../evidence/reports/) |
+| Cursor rules & skills | [`.cursor/README.md`](../.cursor/README.md) |
+| Execution demo | [`evidence/EXECUTION-DEMO.md`](../evidence/EXECUTION-DEMO.md) |
 | Submission reflection | [`../project-info.md`](../project-info.md) |
 
 ---
@@ -33,4 +35,5 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | Which environment do tests hit? | Public Toolshop practice site (UI + API); Chromium locally | [`test-environments.md`](test-environments.md) |
 | How is test data managed? | `PrismStructure/data/` + `.env`; dynamic users for isolation | [`test-data-strategy.md`](test-data-strategy.md) |
 | Where are manual cases (pos/neg/edge)? | 8 cases in CSV + readable suite doc | [`manual-test-suite.md`](manual-test-suite.md) |
-| Where is traceability? | Manual TC ↔ specs ↔ risks ↔ data sets | [`traceability-matrix.md`](traceability-matrix.md) |
+| Where are limitations & gaps? | Consolidated doc | [`limitations-and-gaps.md`](limitations-and-gaps.md) |
+| Where is execution evidence? | Logs + HTML in `evidence/reports/` | [`../evidence/EXECUTION-DEMO.md`](../evidence/EXECUTION-DEMO.md) |
