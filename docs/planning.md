@@ -3,7 +3,7 @@
 **Assessment:** QA AI Practical Assessment  
 **Author / date:** QA lead · 2026-08-10  
 **SUT:** Toolshop — UI `https://practicesoftwaretesting.com` · API `https://api.practicesoftwaretesting.com`  
-**Related docs:** [`README.md`](README.md) · [`test-environments.md`](test-environments.md) · [`traceability-matrix.md`](traceability-matrix.md) · [`../FunctionalTestCase.csv`](../FunctionalTestCase.csv) · [`../exploratory-testing/exploratory-notes.md`](../exploratory-testing/exploratory-notes.md)
+**Related docs:** [`README.md`](README.md) · [`requirements-and-planning.md`](requirements-and-planning.md) · [`test-environments.md`](test-environments.md) · [`traceability-matrix.md`](traceability-matrix.md) · [`../FunctionalTestCase.csv`](../FunctionalTestCase.csv) · [`../exploratory-testing/exploratory-notes.md`](../exploratory-testing/exploratory-notes.md)
 
 This document is the **planning baseline**: scope, risks, acceptance criteria, and traceability from requirements → manual cases → automation.
 
@@ -19,10 +19,10 @@ This document is the **planning baseline**: scope, risks, acceptance criteria, a
 | **UI-AC2** | Browse → multi-product cart → qty update → COD checkout → **double Confirm** → My Invoices | UI | TC-M-02; `checkout.smoke.spec.js` |
 | **API-AC1** | Register/login → Bearer token → create cart → add items | API | `auth-lifecycle.smoke.api.spec.js`, `cart.smoke.api.spec.js` |
 | **API-AC2** | Products → cart → verify → invoice (`cash-on-delivery`) | API | `products.smoke.api.spec.js`, `invoice.api.spec.js` |
-| **Manual** | Smoke + regression functional cases (positive, negative, edge) | Manual | `FunctionalTestCase.csv` (8 cases) |
+| **Manual** | Smoke + regression functional cases (positive, negative, edge) | Manual | `FunctionalTestCase.csv` (**11 cases**, TC-M-01 … TC-M-11) |
 | **Documentation** | Strategy, data, prompts, evidence, reflection | Repo | `docs/`, `ai-prompts/`, `evidence/`, `project-info.md` |
 
-**Automation guideline:** 5–8 UI tests and 5–8 API tests (smoke + regression **combined** per layer). Current implementation: 9 UI + 9 API (includes foundation connectivity check and split API auth smoke).
+**Automation guideline:** 5–8 UI tests and 5–8 API tests (smoke + regression **combined** per layer). Current implementation: **12 UI + 9 API** (21 automated specs total; includes foundation connectivity check).
 
 **Test levels:** Exploratory → manual CSV → UI/API automation (see [`test-strategy.md`](test-strategy.md) §3).
 
@@ -68,7 +68,7 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | # | Criterion | Evidence location | Status |
 |---|-----------|-------------------|--------|
 | D-01 | Public Git repo with Playwright + Prism automation | GitHub `master` | Met |
-| D-02 | Manual functional test cases (smoke/regression, pos/neg/edge) | `FunctionalTestCase.csv`, `docs/manual-test-suite.md` | Met (8 cases) |
+| D-02 | Manual functional test cases (smoke/regression, pos/neg/edge) | `FunctionalTestCase.csv`, `docs/manual-test-suite.md` | Met (**11 cases**) |
 | D-03 | UI automation with POM | `PrismStructure/tests/ui/`, `pages/` | Met |
 | D-04 | API automation (Playwright `request`) | `PrismStructure/tests/api/`, `api/` | Met |
 | D-05 | Test data strategy documented | `docs/test-data-strategy.md`, `PrismStructure/data/` | Met |
@@ -90,6 +90,9 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | **UI-AC6** | Logged-in user, one product, COD to Confirm | User clicks Confirm **once** | Invoice not finalized in My Invoices (TC-M-06) |
 | **UI-AC7** | Invoice created in UI session | Same user calls API `GET /invoices` | Matching `invoice_number` (and total per manual case) (TC-M-07) |
 | **UI-AC8** | Product in cart, checkout in progress | User reaches payment step | Cash on Delivery selected before Confirm (TC-M-08) |
+| **UI-AC9** | Valid unique registration data | User registers and logs in with new credentials | Account usable in same session (TC-M-09) |
+| **UI-AC10** | Logged-in user | User logs out | Session ended; protected routes require login (TC-M-10) |
+| **UI-AC11** | User with at least one invoice | User opens invoice from My Invoices | Detail page shows invoice number and totals (TC-M-11) |
 
 ### 3.3 API acceptance criteria (functional)
 
@@ -121,6 +124,9 @@ Full matrix (including data sets and API spec list): [`traceability-matrix.md`](
 | TC-M-06 | Edge | Regression | SC-INV-SINGLE-CONFIRM | `ui/regression/single-confirm.regression.spec.js` | — | R-01 |
 | TC-M-07 | Positive | Regression | SC-UI-API-INVOICE-MATCH | `ui/regression/ui-api-invoice.regression.spec.js` | `api/regression/invoice.api.spec.js` (API path) | R-13, R-14 |
 | TC-M-08 | Negative | Regression | SC-COD-PAYMENT-SELECTED | `ui/regression/cod-payment.regression.spec.js` | — | R-02 |
+| TC-M-09 | Positive | Regression | SC-REG-NEW-USER | `ui/regression/registration.regression.spec.js` | — | R-05, R-11 |
+| TC-M-10 | Positive | Regression | SC-LOGOUT | `ui/regression/logout.regression.spec.js` | — | R-05 |
+| TC-M-11 | Positive | Regression | SC-INV-DETAILS | `ui/regression/invoice-details.regression.spec.js` | — | R-13, R-14 |
 
 ### 4.2 Assessment flows → automation (API)
 
@@ -140,7 +146,7 @@ Full matrix (including data sets and API spec list): [`traceability-matrix.md`](
 
 | Planning activity | Artefact |
 |-------------------|----------|
-| Requirements analysis | `ai-prompts/requirements-and-planning.md` (Prompt 01) |
+| Requirements analysis | `docs/requirements-and-planning.md`, `ai-prompts/requirements-and-planning.md` (Prompt 01) |
 | Exploratory testing | `exploratory-testing/exploratory-notes.md` |
 | Test strategy & data | `docs/test-strategy.md`, `docs/test-data-strategy.md`, `docs/test-environments.md`, `docs/traceability-matrix.md` |
 | Automation / debugging | `ai-prompts/automation-and-debugging.md` |

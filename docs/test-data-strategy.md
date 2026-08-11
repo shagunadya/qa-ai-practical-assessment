@@ -196,6 +196,9 @@
 | TC-M-06 | Valid user §2 (isolated), products §5, checkout §7, invoice §8 (1× confirm) |
 | TC-M-07 | Valid user §2, invoice §8 (captured), API payload §9 |
 | TC-M-08 | Valid user §2, products §5, checkout §7 |
+| TC-M-09 | Registration §1 |
+| TC-M-10 | Registration §1 (register → login → logout) |
+| TC-M-11 | Valid user §2 (seeded), invoice §8 (existing invoice) |
 
 ---
 

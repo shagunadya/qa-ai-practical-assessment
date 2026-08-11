@@ -400,7 +400,7 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 |-----------|---------------|----------------|
 | TC-M-01 | `auth.smoke.spec.js` | `auth-lifecycle.smoke.api.spec.js` |
 | TC-M-02 | `checkout.smoke.spec.js` | `cart.smoke`, `invoice.api` (lifecycle) |
-| TC-M-03 … TC-M-08 | Matching `*.regression.spec.js` | See [`traceability-matrix.md`](traceability-matrix.md) §2 |
+| TC-M-03 … TC-M-11 | Matching `*.regression.spec.js` | See [`traceability-matrix.md`](traceability-matrix.md) §2 |
 | TC-M-09 | `registration.regression.spec.js` | — |
 | TC-M-10 | `logout.regression.spec.js` | — |
 | TC-M-11 | `invoice-details.regression.spec.js` | — |

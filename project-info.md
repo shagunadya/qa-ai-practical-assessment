@@ -21,13 +21,11 @@ This repository documents an AI-assisted QA capability assessment against **Prac
 
 **Deliverables present in the repo:**
 
-- Manual suite: `FunctionalTestCase.csv` (8 cases, TC-M-01 … TC-M-08)
-- UI automation: Playwright + Page Object Model under `PrismStructure/tests/ui/`
-- API automation: Playwright `request` API under `PrismStructure/tests/api/`
-- Strategy docs: `docs/test-strategy.md`, `docs/test-data-strategy.md`
-- Exploratory record: `exploratory-testing/exploratory-notes.md`
-- AI prompt history: `ai-prompts/` (planning and automation/debugging logged; test-design and test-data templates partially filled)
-- Playwright HTML reports: `PrismStructure/reports/html/`
+- Manual suite: `FunctionalTestCase.csv` (**11 cases**, TC-M-01 … TC-M-11)
+- UI automation: **12** Playwright specs under `PrismStructure/tests/ui/`
+- API automation: **9** Playwright specs under `PrismStructure/tests/api/`
+- Strategy docs: `docs/test-strategy.md`, `docs/requirements-and-planning.md`, `docs/test-data-strategy.md`, `docs/limitations-and-gaps.md`
+- Execution evidence: `evidence/reports/` (see `RUN-MANIFEST.md`)
 
 **Out of scope:** Admin operations, non-COD payment paths, performance/load testing, cross-browser beyond Chromium, full OpenAPI surface (`docs/test-strategy.md` §2).
 
@@ -136,12 +134,12 @@ Context was supplied iteratively through Cursor chat, referencing repo files and
 
 ## 7. Manual test design with AI
 
-**Delivered:** `FunctionalTestCase.csv` — **8 manual cases** (within assessment lean cap):
+**Delivered:** `FunctionalTestCase.csv` — **11 manual cases**:
 
 | Suite | Count | IDs |
 |-------|-------|-----|
 | Smoke | 2 | TC-M-01 (register/login/profile), TC-M-02 (COD multi-product checkout) |
-| Regression | 6 | TC-M-03 … TC-M-08 (invalid login, duplicate register, empty cart, single Confirm edge, UI↔API invoice match, COD selected) |
+| Regression | 9 | TC-M-03 … TC-M-11 (negatives/edge + registration, logout, invoice details) |
 
 Each row includes scenario type (Positive / Negative / Edge), priority, and risk traceability (R-01–R-14).
 
@@ -160,8 +158,8 @@ Each row includes scenario type (Positive / Negative / Edge), priority, and risk
 | Suite | Count | Specs | Manual trace |
 |-------|-------|-------|--------------|
 | Smoke | 3 | `foundation.smoke.spec.js`, `auth.smoke.spec.js`, `checkout.smoke.spec.js` | TC-M-01, TC-M-02 (+ foundation connectivity check) |
-| Regression | 6 | `invalid-login`, `duplicate-registration`, `empty-cart`, `single-confirm`, `ui-api-invoice`, `cod-payment` | TC-M-03 … TC-M-08 |
-| **Total** | **9** | | |
+| Regression | 9 | `invalid-login`, `duplicate-registration`, `empty-cart`, `single-confirm`, `ui-api-invoice`, `cod-payment`, `registration`, `logout`, `invoice-details` | TC-M-03 … TC-M-11 |
+| **Total** | **12** | | |
 
 **API automation** (`PrismStructure/tests/api/`):
 
@@ -179,7 +177,7 @@ Each row includes scenario type (Positive / Negative / Edge), priority, and risk
 
 **AI assistance:** Interaction 6 in `automation-and-debugging.md` — API structure designed **without code** first (client, assertions, fixtures, folder layout). UI/API specs were generated incrementally per approved scenario.
 
-**QA decision (human):** Approved phased delivery (auth → cart → invoice API; one UI regression at a time). Counts are **9 per layer** (1 above the 5–8 guideline) due to `foundation.smoke.spec.js` and an extra API smoke split; core AC scenarios remain within cap intent.
+**QA decision (human):** Approved phased delivery (auth → cart → invoice API; one UI regression at a time). Counts are **12 UI + 9 API** (above the 5–8 guideline per layer) due to `foundation.smoke.spec.js`, extended regression (TC-M-09–11), and API smoke split; core AC scenarios remain within cap intent.
 
 ---
 
@@ -323,7 +321,7 @@ flowchart LR
 
 **Gaps in this submission (see [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md))**
 
-- Full 18-test suite green on shared SUT remains **open**; smoke **7/7** and regression **10/11** evidenced in `evidence/reports/`.
+- Full 21-test suite green on shared SUT remains **open**; smoke **7/7** and regression **10/11** evidenced in `evidence/reports/`.
 - Cursor rules/skills added under `.cursor/`; execution demo in `evidence/EXECUTION-DEMO.md`.
 - No CI pipeline; Chromium-only configuration.
 
@@ -337,8 +335,9 @@ AI helped deliver a structured Playwright suite within assessment scope, but **d
 
 | Layer | Smoke | Regression | Total |
 |-------|-------|------------|-------|
-| Manual (`FunctionalTestCase.csv`) | 2 | 6 | **8** |
-| UI automation | 3 | 6 | **9** |
+| Manual (`FunctionalTestCase.csv`) | 2 | 9 | **11** |
+| UI automation | 3 | 9 | **12** |
 | API automation | 4 | 5 | **9** |
+| **Automated total** | 7 `@smoke` | 14 `@regression` | **21** |
 
 **SUT:** UI https://practicesoftwaretesting.com · API https://api.practicesoftwaretesting.com · Docs https://api.practicesoftwaretesting.com/api/documentation

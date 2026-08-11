@@ -106,17 +106,17 @@ Full risk definitions: [`planning.md`](planning.md) §2.
 
 ## 6. Test data → manual TC
 
-| Data set (see `test-data-strategy.md`) | TC-M-01 | TC-M-02 | TC-M-03 | TC-M-04 | TC-M-05 | TC-M-06 | TC-M-07 | TC-M-08 |
-|----------------------------------------|---------|---------|---------|---------|---------|---------|---------|---------|
-| §1 Registration | ✅ | | | | | | | |
-| §2 Seeded user | | ✅ | | | ✅ | ✅ | ✅ | ✅ |
-| §3 Invalid login | | | ✅ | | | | | |
-| §4 Duplicate register | | | | ✅ | | | | |
-| §5 Products | | ✅ | | | | ✅ | | ✅ |
-| §6 Cart qty | | ✅ | | | | | | |
-| §7 Checkout / COD | | ✅ | | | | ✅ | | ✅ |
-| §8 Invoice capture | | ✅ | | | | ✅ | ✅ | |
-| §9 API payloads | | | | | | | ✅ | |
+| Data set (see `test-data-strategy.md`) | TC-M-01 | TC-M-02 | TC-M-03 | TC-M-04 | TC-M-05 | TC-M-06 | TC-M-07 | TC-M-08 | TC-M-09 | TC-M-10 | TC-M-11 |
+|----------------------------------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| §1 Registration | ✅ | | | | | | | | ✅ | ✅ | |
+| §2 Seeded user | | ✅ | | | ✅ | ✅ | ✅ | ✅ | | | ✅ |
+| §3 Invalid login | | | ✅ | | | | | | | | |
+| §4 Duplicate register | | | | ✅ | | | | | | | |
+| §5 Products | | ✅ | | | | ✅ | | ✅ | | | |
+| §6 Cart qty | | ✅ | | | | | | | | | |
+| §7 Checkout / COD | | ✅ | | | | ✅ | | ✅ | | | |
+| §8 Invoice capture | | ✅ | | | | ✅ | ✅ | | | | ✅ |
+| §9 API payloads | | | | | | | ✅ | | | | |
 
 Code modules: `PrismStructure/data/ui-test-data.js`, `api-test-data.js`.
 

@@ -461,7 +461,6 @@ Consolidated list; see [`limitations-and-gaps.md`](limitations-and-gaps.md) for 
 - API negative specs for 401/422 documented in manual catalog  
 - Stricter invoice regex after live pattern confirmation  
 - Re-run full 21-test suite and commit green evidence (D-10)  
-- Sync `project-info.md` / `planning.md` counts with 11 manual / 12 UI specs  
 - Populate `defects/defect-report.md` when true SUT defects found  
 
 ---

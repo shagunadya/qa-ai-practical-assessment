@@ -27,7 +27,7 @@ This document consolidates **known limitations** (constraints we accept) and **r
 |----|------------|--------|
 | L-06 | **Chromium only** | No Firefox/WebKit projects in `playwright.config.js` |
 | L-07 | **No CI pipeline** | Tests run locally; no GitHub Actions workflow |
-| L-08 | **Assessment test cap** | Guideline 5–8 tests/layer; repo has **9 UI + 9 API** (foundation smoke + split API auth) |
+| L-08 | **Assessment test cap** | Guideline 5–8 tests/layer; repo has **12 UI + 9 API** (21 automated specs; foundation smoke + extended regression) |
 | L-09 | **COD-only checkout** | Non-COD payment paths not covered |
 | L-10 | **Partial OpenAPI surface** | Lifecycle endpoints for confirmed flows only |
 | L-11 | **Live SUT vs docs drift** | OpenAPI status codes, billing geo-rules, UI double Confirm differ from written strategy — adjusted after live runs |
@@ -67,7 +67,7 @@ See [`traceability-matrix.md`](traceability-matrix.md) §8 for coverage gaps.
 | Cursor rules | **Closed** | `.cursor/rules/` — core + Playwright conventions |
 | Cursor skills | **Closed** | `.cursor/skills/` — run tests + debug |
 | Execution evidence | **Partial** | Smoke **7/7** green + HTML in `evidence/reports/`; regression/UI demo runs exported |
-| Full suite green (18/18) | **Open** | Historical full run 10/18 — lockout/network; re-run when SUT stable |
+| Full suite green (21/21) | **Open** | Historical full run 10/18 (predates TC-M-09–11); re-run when SUT stable |
 | CI/CD | **Open** | Out of assessment scope |
 | Cross-browser | **Open** | Out of assessment scope |
 | `.cursor/rules` in assessor brief | **Met** | See [`.cursor/README.md`](../.cursor/README.md) |

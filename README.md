@@ -12,10 +12,10 @@ For assessment reflection and AI usage details, see [`project-info.md`](project-
 
 This repository delivers end-to-end QA artefacts for Toolshop v5.0:
 
-- **Manual functional tests** — [`FunctionalTestCase.csv`](FunctionalTestCase.csv) (8 cases) · [`docs/manual-test-suite.md`](docs/manual-test-suite.md) (steps, data, expected results, negative/edge catalog)
-- **UI automation** — Playwright + Page Object Model (9 automated tests)
-- **API automation** — Playwright `request` API (9 automated tests)
-- **Strategy, planning & traceability** — [`docs/README.md`](docs/README.md) (index): [`planning.md`](docs/planning.md), [`test-strategy.md`](docs/test-strategy.md), [`test-environments.md`](docs/test-environments.md), [`test-data-strategy.md`](docs/test-data-strategy.md), [`traceability-matrix.md`](docs/traceability-matrix.md)
+- **Manual functional tests** — [`FunctionalTestCase.csv`](FunctionalTestCase.csv) (**11 cases**, TC-M-01 … TC-M-11) · [`docs/manual-test-suite.md`](docs/manual-test-suite.md)
+- **UI automation** — Playwright + Page Object Model (**12** specs: 3 smoke + 9 regression)
+- **API automation** — Playwright `request` API (**9** specs: 4 smoke + 5 regression)
+- **Strategy, planning & traceability** — [`docs/README.md`](docs/README.md): [`requirements-and-planning.md`](docs/requirements-and-planning.md), [`planning.md`](docs/planning.md), [`test-strategy.md`](docs/test-strategy.md), [`traceability-matrix.md`](docs/traceability-matrix.md), [`limitations-and-gaps.md`](docs/limitations-and-gaps.md)
 - **Exploratory testing record** — `exploratory-testing/exploratory-notes.md`
 - **AI-assisted workflow log** — `ai-prompts/`
 
@@ -46,7 +46,7 @@ The SUT is a public ecommerce practice site (registration, login, catalog, cart,
 | Positive, negative, and edge scenarios | Cross-browser beyond Chromium |
 | AI prompt history and responsible-use documentation | Full OpenAPI surface |
 
-**Test caps (assessment guideline):** 5–8 automated tests per layer (UI and API, smoke + regression combined). Current counts are 9 per layer (includes a UI foundation connectivity check and an extra API smoke split). See [`docs/test-strategy.md`](docs/test-strategy.md) and [`docs/traceability-matrix.md`](docs/traceability-matrix.md).
+**Test caps (assessment guideline):** 5–8 automated tests per layer (smoke + regression combined). Current counts are **12 UI + 9 API** (21 total). See [`docs/test-strategy.md`](docs/test-strategy.md) §2 and [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md) L-08.
 
 ---
 
@@ -78,6 +78,9 @@ Log in → add two in-stock products → update quantity → checkout with **Cas
 | TC-M-06 | Single Confirm does not finalize invoice (edge) |
 | TC-M-07 | UI My Invoices matches API `GET /invoices` |
 | TC-M-08 | Cash on Delivery selected before Confirm |
+| TC-M-09 | Registration creates account with working login |
+| TC-M-10 | Logout ends authenticated session |
+| TC-M-11 | Invoice detail page verification |
 
 ---
 
@@ -102,7 +105,8 @@ qa-ai-practical-assessment/
 ├── playwright.config.js          # Playwright config (UI + API projects)
 ├── package.json                  # npm scripts
 ├── .env.example                  # Optional environment overrides
-├── FunctionalTestCase.csv        # Manual test cases (TC-M-01 … TC-M-08)
+├── FunctionalTestCase.csv        # Manual test cases (TC-M-01 … TC-M-11)
+├── LIMITATIONS.md                # Pointer → docs/limitations-and-gaps.md
 ├── project-info.md               # Assessment summary and AI reflection
 ├── PrismStructure/
 │   ├── pages/                    # Page Object Model (Login, Cart, Checkout, …)
@@ -112,15 +116,17 @@ qa-ai-practical-assessment/
 │   ├── tests/
 │   │   ├── ui/
 │   │   │   ├── smoke/            # foundation, auth, checkout
-│   │   │   └── regression/       # TC-M-03 … TC-M-08
+│   │   │   └── regression/       # TC-M-03 … TC-M-11
 │   │   └── api/
 │   │       ├── smoke/            # auth, auth-lifecycle, cart, products
 │   │       └── regression/       # register, login, cart, invoice, …
 │   └── reports/html/             # Generated Playwright HTML report (gitignored)
 ├── docs/
 │   ├── README.md                 # Documentation index
+│   ├── requirements-and-planning.md
 │   ├── planning.md               # Scope, risks, ACs
-│   ├── test-strategy.md
+│   ├── test-strategy.md          # Full 15-section strategy
+│   ├── limitations-and-gaps.md
 │   ├── test-environments.md      # SUT URLs, Playwright config, workers
 │   ├── test-data-strategy.md
 │   ├── traceability-matrix.md    # Manual → automation → risks → data
@@ -398,8 +404,8 @@ Manual cases are in [`FunctionalTestCase.csv`](FunctionalTestCase.csv):
 | Suite | Count | IDs |
 |-------|-------|-----|
 | Smoke | 2 | TC-M-01, TC-M-02 |
-| Regression | 6 | TC-M-03 … TC-M-08 |
-| **Total** | **8** | |
+| Regression | 9 | TC-M-03 … TC-M-11 |
+| **Total** | **11** | |
 
 Columns include scenario type (Positive / Negative / Edge), priority, risk IDs, preconditions, steps, and expected results. Automated specs map to these IDs (e.g. `checkout.smoke.spec.js` → TC-M-02).
 
@@ -470,7 +476,7 @@ Full list: [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md). Summa
 | **Execution evidence** | Committed under `evidence/reports/` — see [`evidence/EXECUTION-DEMO.md`](evidence/EXECUTION-DEMO.md) |
 | **Live SUT drift** | UI/API behaviour adjusted after live runs — see `ai-prompts/automation-and-debugging.md` |
 | **Cursor config** | [`.cursor/rules/`](.cursor/rules/) and [`.cursor/skills/`](.cursor/skills/) |
-| **Full suite green** | Smoke 7/7 evidenced; full 18-test suite may fail on shared env (honest logs retained) |
+| **Full suite green** | Smoke 7/7 evidenced; **21** automated tests — full suite may fail on shared env (see `RUN-MANIFEST.md`) |
 
 ---
 
