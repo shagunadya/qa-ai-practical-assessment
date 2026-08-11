@@ -65,8 +65,8 @@ External reference implementations (e.g. third-party GitHub examples) were **not
 
 ### 4. How generated code was validated
 
-| Step | What we did |
-|------|-------------|
+| Step | What I did |
+|------|------------|
 | Execute tests | Ran Playwright locally (`npx playwright test`, `--grep "@smoke"` / `@regression`, `--project=api`, `--workers=1` where needed) |
 | Inspect failures | Used HTML reports, screenshots, and Playwright `error-context.md` to confirm locators and assertions |
 | Confirm against exploration | Cross-checked selectors, checkout steps, and product anchors with `exploratory-testing/exploratory-notes.md` |
@@ -105,7 +105,7 @@ When AI output conflicted with execution results, **the run result and screensho
 - **Plan before code** — Requirements analysis and API structure design completed with explicit “do not implement yet” prompts.
 - **Diagnose before fix** — TC-M-02 failure analyzed with a ranked root-cause prompt before any code change.
 - **Incremental delivery** — UI regression implemented one approved scenario at a time; API split into auth → cart → invoice phases.
-- **Scope gates** — User prompts deferred cart/invoice API work until auth was stable; rejected broad refactors (“do not redesign the framework”).
+- **Scope gates** — I deferred cart/invoice API work until auth was stable and rejected broad refactors (“do not redesign the framework”).
 - **Evidence logging** — Session outcomes captured in `ai-prompts/automation-and-debugging.md` for assessor review.
 - **Git discipline** — Iterative commits per phase (per assessment requirement); commit/push verified manually when IDE operations timed out.
 
