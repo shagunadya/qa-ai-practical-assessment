@@ -24,8 +24,8 @@ This matrix links **assessment flows**, **manual cases**, **automation**, **risk
 
 ## 2. Manual test case matrix
 
-| TC ID | Scenario ID | Type | Suite | Manual | UI spec | API spec | Risks | Data sets |
-|-------|-------------|------|-------|--------|---------|----------|-------|-----------|
+| TC ID | Scenario ID | Scenario type | Suite | Manual | UI spec | API spec | Risks | Data sets |
+|-------|-------------|---------------|-------|--------|---------|----------|-------|-----------|
 | TC-M-01 | SC-AC1-REG-LOGIN-PROFILE | Positive | Smoke | ✅ | `ui/smoke/auth.smoke.spec.js` | `api/smoke/auth-lifecycle.smoke.api.spec.js` | R-05, R-11 | Registration §1 |
 | TC-M-02 | SC-AC2-COD-DOUBLE-CONFIRM | Positive | Smoke | ✅ | `ui/smoke/checkout.smoke.spec.js` | ⚠️ `cart.smoke`, `invoice.api` (lifecycle) | R-01–R-04, R-08, R-10, R-13 | §2, §5–8 |
 | TC-M-03 | SC-LOGIN-INVALID-PWD | Negative | Regression | ✅ | `ui/regression/invalid-login.regression.spec.js` | `api/regression/invalid-login.api.spec.js` | R-07, R-12 | Invalid login §3 |
@@ -35,7 +35,7 @@ This matrix links **assessment flows**, **manual cases**, **automation**, **risk
 | TC-M-07 | SC-UI-API-INVOICE-MATCH | Positive | Regression | ✅ | `ui/regression/ui-api-invoice.regression.spec.js` | `api/regression/invoice.api.spec.js` | R-13, R-14 | §2, §8–9 |
 | TC-M-08 | SC-COD-PAYMENT-SELECTED | Negative | Regression | ✅ | `ui/regression/cod-payment.regression.spec.js` | — | R-02 | §2, §5, §7 |
 
-Source CSV: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv).
+Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and negative/edge catalog: [`manual-test-suite.md`](manual-test-suite.md).
 
 ---
 

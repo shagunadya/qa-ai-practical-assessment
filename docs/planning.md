@@ -68,7 +68,7 @@ Risks informed planning, manual suite design, and automation priorities. Severit
 | # | Criterion | Evidence location | Status |
 |---|-----------|-------------------|--------|
 | D-01 | Public Git repo with Playwright + Prism automation | GitHub `master` | Met |
-| D-02 | Manual functional test cases (smoke/regression, pos/neg/edge) | `FunctionalTestCase.csv` | Met (8 cases) |
+| D-02 | Manual functional test cases (smoke/regression, pos/neg/edge) | `FunctionalTestCase.csv`, `docs/manual-test-suite.md` | Met (8 cases) |
 | D-03 | UI automation with POM | `PrismStructure/tests/ui/`, `pages/` | Met |
 | D-04 | API automation (Playwright `request`) | `PrismStructure/tests/api/`, `api/` | Met |
 | D-05 | Test data strategy documented | `docs/test-data-strategy.md`, `PrismStructure/data/` | Met |

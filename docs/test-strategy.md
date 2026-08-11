@@ -77,8 +77,8 @@
 
 ## 6. Manual testing approach
 
-- Maintain **up to 8 lean cases** in `FunctionalTestCase.csv` (same cap discipline as automation)
-- Columns: Suite (Smoke/Regression), Scenario (Positive/Negative/Edge), AC trace, automation mapping
+- Maintain **8 lean cases** in `FunctionalTestCase.csv` with readable detail in [`manual-test-suite.md`](manual-test-suite.md)
+- Columns: Scenario Type (Positive/Negative/Edge), Suite, steps, test data, expected results, automation mapping
 - Execute exploratory and manual smoke before locking automation assertions
 - Log defects in `defects/defect-report.md`; distinguish SUT quirks (double Confirm) from defects
 - One manual UI↔API invoice comparison per release candidate (R-14)

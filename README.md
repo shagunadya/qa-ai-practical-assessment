@@ -12,7 +12,7 @@ For assessment reflection and AI usage details, see [`project-info.md`](project-
 
 This repository delivers end-to-end QA artefacts for Toolshop v5.0:
 
-- **Manual functional tests** — `FunctionalTestCase.csv` (8 cases)
+- **Manual functional tests** — [`FunctionalTestCase.csv`](FunctionalTestCase.csv) (8 cases) · [`docs/manual-test-suite.md`](docs/manual-test-suite.md) (steps, data, expected results, negative/edge catalog)
 - **UI automation** — Playwright + Page Object Model (9 automated tests)
 - **API automation** — Playwright `request` API (9 automated tests)
 - **Strategy, planning & traceability** — [`docs/README.md`](docs/README.md) (index): [`planning.md`](docs/planning.md), [`test-strategy.md`](docs/test-strategy.md), [`test-environments.md`](docs/test-environments.md), [`test-data-strategy.md`](docs/test-data-strategy.md), [`traceability-matrix.md`](docs/traceability-matrix.md)
@@ -123,7 +123,8 @@ qa-ai-practical-assessment/
 │   ├── test-strategy.md
 │   ├── test-environments.md      # SUT URLs, Playwright config, workers
 │   ├── test-data-strategy.md
-│   └── traceability-matrix.md    # Manual → automation → risks → data
+│   ├── traceability-matrix.md    # Manual → automation → risks → data
+│   └── manual-test-suite.md      # Manual cases: steps, data, pos/neg/edge
 ├── ai-prompts/                   # AI prompt history
 ├── exploratory-testing/
 │   └── exploratory-notes.md
