@@ -3,8 +3,29 @@
 Prompts used to implement Playwright UI/API automation and fix failures with AI assistance.
 
 **Stack:** Playwright, JavaScript, Prism Framework (`PrismStructure/`)  
-**Session date:** 2026-08-10  
-**Evidence sources:** Cursor agent transcript `e46fbbcf-b766-42bf-a0e8-4d0f638e5db3`, repository files under `PrismStructure/`, test run output captured in session.
+**Session date:** 2026-08-10 (automation); 2026-08-11 (evidence export)  
+**Evidence sources:** Cursor agent transcript `e46fbbcf-b766-42bf-a0e8-4d0f638e5db3`, repository files under `PrismStructure/`, test run output in `evidence/reports/`.  
+**Index:** See [`README.md`](README.md) for all prompt chains.
+
+---
+
+## Iteration chains (this file)
+
+| Chain | Interactions | Thread |
+|-------|--------------|--------|
+| **AUTO-A** — Smoke stabilize | 1 → 4 | Run smoke → fix imports/locators/POM → re-run green |
+| **AUTO-B** — TC-M-02 cart race | 2 → 3 → 4 | RCA (no code) → minimal fix + checkout drift → smoke verify |
+| **AUTO-C** — UI regression | 5 | TC-M-03 … TC-M-08 one-at-a-time |
+| **AUTO-D** — API layer | 6 → 7 → 8 → 9 | Design (no code) → auth → cart → invoice |
+
+```text
+AUTO-A:  [1 Run smoke] ──fail──► fixes in 1 ──► [4 Re-run smoke] ──► pass
+AUTO-B:  [2 RCA TC-M-02] ──► [3 Fix waiter + checkout] ──► [4 pass]
+AUTO-C:  [5 TC-M-03] ──► [5 TC-M-04] ──► … ──► [5 TC-M-08] ──► 6/6 regression
+AUTO-D:  [6 Design] ──► [7 Auth] ──► [8 Cart] ──► [9 Invoice] ──► API regression pass
+```
+
+Each interaction below follows: **Prompt → AI response → Outcome → QA decision → Artefacts**.
 
 ---
 

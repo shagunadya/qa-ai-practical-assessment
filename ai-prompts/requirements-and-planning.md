@@ -95,39 +95,35 @@ Produced a planning baseline covering objectives, SUT scope (Toolshop UI + API e
 
 ---
 
-### Entry 3 — UI flow inventory (planned)
+## Chain P3 — UI flow inventory (after exploration)
 
-- **Prompt:**
-  ```
-  Analyze https://practicesoftwaretesting.com/ as a QA engineer.
+**Prerequisite:** `exploratory-testing/exploratory-notes.md` completed 2026-08-10.
 
-  Identify the main testable ecommerce flows covering:
-  - Registration
-  - Login and profile
-  - Product browsing and search
-  - Cart and quantity updates
-  - Checkout using Cash on Delivery
-  - Invoice generation and verification
+### Iteration P3.1 — Flow inventory prompt
 
-  Categorize the flows as Smoke or Regression. Include positive, negative, and edge scenarios.
-  Keep the scope suitable for 5–8 UI automated tests.
-  ```
-- **AI Response (summary):** _(pending — run after SUT exploration)_
-- **Validation Notes:** Defer until manual walkthrough of COD checkout and invoice Confirm behavior.
+| Field | Content |
+|-------|---------|
+| **Prompt** | Analyze https://practicesoftwaretesting.com/ as a QA engineer. Identify main testable ecommerce flows: registration, login/profile, browse/search, cart/qty, COD checkout, invoice/My Invoices. Categorize Smoke vs Regression; positive/negative/edge. Cap UI automation at 5–8 tests. |
+| **AI response** | Flow list: AC1 register/login/profile (smoke); AC2 multi-product COD + double Confirm (smoke); regression: invalid login, duplicate register, empty cart, single Confirm, UI↔API invoice, COD selected. |
+| **Outcome** | Inputs for `FunctionalTestCase.csv` and Chain TD1 in `test-design.md`. |
+| **QA decision** | **Accept** flows; human locked product anchors and Confirm behaviour in exploration notes. |
+| **Artefacts** | `exploratory-notes.md`, `FunctionalTestCase.csv`, `docs/planning.md` §1 |
 
 ---
 
-### Entry 4 — OpenAPI / API lifecycle mapping (planned)
+## Chain P4 — OpenAPI / API lifecycle mapping
 
-- **Prompt:**
-  ```
-  From Toolshop OpenAPI (api.practicesoftwaretesting.com/docs?api-docs.json),
-  map endpoints for AC1 (auth, cart) and AC2 (products, cart verify, invoice).
-  List required fields, auth scheme, and error codes for negative API tests.
-  Cap automated API design to 5–8 tests (smoke + regression).
-  ```
-- **AI Response (summary):** _(pending — run after Swagger/OpenAPI review)_
-- **Validation Notes:** Cross-check UI network tab during checkout against mapped API sequence.
+**Prerequisite:** Network tab during checkout + Swagger review.
+
+### Iteration P4.1 — Endpoint mapping prompt
+
+| Field | Content |
+|-------|---------|
+| **Prompt** | From Toolshop OpenAPI, map endpoints for AC1 (auth, cart) and AC2 (products, cart verify, invoice). List required fields, Bearer auth, error codes for negatives. Cap API automation at 5–8 tests. |
+| **AI response** | Sequence: `POST /users/register`, `POST /users/login`, `POST /carts`, `POST /carts/{id}`, `GET /products`, `POST /invoices` (`cash-on-delivery`), `GET /invoices`. Negatives: 401 login, 409 duplicate register. Assumed invoice `200` (later corrected to `201`). |
+| **Outcome** | Blueprint for `ToolshopApiClient` and Chain AUTO-D (`automation-and-debugging.md` Interaction 6). |
+| **QA decision** | **Refine after live runs** — status codes, billing validation, breached-password policy (see `test-data.md` DATA3/DATA4). |
+| **Artefacts** | `PrismStructure/api/`, `docs/test-data-strategy.md` §9, `docs/planning.md` §4.2 |
 
 ---
 
