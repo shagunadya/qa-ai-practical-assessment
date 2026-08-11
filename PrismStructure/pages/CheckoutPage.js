@@ -66,9 +66,21 @@ class CheckoutPage extends BasePage {
   }
 
   async clickProceedStep() {
-    const button = this.proceedStepButton.first();
-    await button.waitFor({ state: 'visible' });
-    await button.click();
+    const buttons = this.page.locator('button[data-test^="proceed-"]');
+    const count = await buttons.count();
+
+    for (let index = count - 1; index >= 0; index -= 1) {
+      const button = buttons.nth(index);
+      if ((await button.isVisible()) && (await button.isEnabled())) {
+        await button.click();
+        return;
+      }
+    }
+
+    const fallback = this.proceedStepButton.filter({ hasNotText: '' }).first();
+    await fallback.waitFor({ state: 'visible', timeout: 30000 });
+    await expect(fallback).toBeEnabled({ timeout: 30000 });
+    await fallback.click();
   }
 
   async waitForPaymentSuccess() {

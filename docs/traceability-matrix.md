@@ -34,6 +34,9 @@ This matrix links **assessment flows**, **manual cases**, **automation**, **risk
 | TC-M-06 | SC-INV-SINGLE-CONFIRM | Edge | Regression | ✅ | `ui/regression/single-confirm.regression.spec.js` | — | R-01 | §2, §5, §7–8 |
 | TC-M-07 | SC-UI-API-INVOICE-MATCH | Positive | Regression | ✅ | `ui/regression/ui-api-invoice.regression.spec.js` | `api/regression/invoice.api.spec.js` | R-13, R-14 | §2, §8–9 |
 | TC-M-08 | SC-COD-PAYMENT-SELECTED | Negative | Regression | ✅ | `ui/regression/cod-payment.regression.spec.js` | — | R-02 | §2, §5, §7 |
+| TC-M-09 | SC-REG-NEW-USER | Positive | Regression | ✅ | `ui/regression/registration.regression.spec.js` | — | R-05, R-11 | Registration §1 |
+| TC-M-10 | SC-LOGOUT | Positive | Regression | ✅ | `ui/regression/logout.regression.spec.js` | — | R-05 | Registration §1 |
+| TC-M-11 | SC-INV-DETAILS | Positive | Regression | ✅ | `ui/regression/invoice-details.regression.spec.js` | — | R-13, R-14 | §2 (seeded user) |
 
 Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and negative/edge catalog: [`manual-test-suite.md`](manual-test-suite.md).
 
@@ -52,8 +55,11 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | `single-confirm.regression.spec.js` | `@regression` | TC-M-06 | — | R-01 |
 | `ui-api-invoice.regression.spec.js` | `@regression` | TC-M-07 | — | R-13, R-14 |
 | `cod-payment.regression.spec.js` | `@regression` | TC-M-08 | — | R-02 |
+| `registration.regression.spec.js` | `@regression` | TC-M-09 | UI-AC1 | R-05, R-11 |
+| `logout.regression.spec.js` | `@regression` | TC-M-10 | UI-AC1 | R-05 |
+| `invoice-details.regression.spec.js` | `@regression` | TC-M-11 | UI-AC2 | R-13, R-14 |
 
-**Count:** 9 UI specs (includes 1 foundation connectivity check; assessment cap note in [`planning.md`](planning.md) §1).
+**Count:** 12 UI specs (includes 1 foundation connectivity check; assessment cap note in [`planning.md`](planning.md) §1).
 
 ---
 
@@ -83,7 +89,7 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | R-02 | COD must be selected | TC-M-02, TC-M-08 | `checkout.smoke`, `cod-payment` | `invoice.api` |
 | R-03 | Cart persistence / race | TC-M-02 | `checkout.smoke` | `cart.smoke`, `cart.api` |
 | R-04 | Empty cart checkout | TC-M-05 | `empty-cart` | — |
-| R-05 | Auth/session failure | TC-M-01 | `auth.smoke` | `auth-lifecycle`, `auth.smoke` |
+| R-05 | Auth/session failure | TC-M-01, TC-M-09, TC-M-10 | `auth.smoke`, `registration`, `logout` | `auth-lifecycle`, `auth.smoke` |
 | R-06 | Token timing | — | — | Fixtures (fresh login) |
 | R-07 | Demo lockout (423) | TC-M-03 | `invalid-login` | `invalid-login` |
 | R-08 | Qty update before checkout | TC-M-02 | `checkout.smoke` | `cart.api` |
@@ -91,8 +97,8 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | R-10 | Multi-product cart | TC-M-02 | `checkout.smoke` | `cart.smoke`, `cart.api` |
 | R-11 | Registration failures | TC-M-01, TC-M-04 | `auth.smoke`, `duplicate-registration` | `register`, `duplicate-register` |
 | R-12 | Invalid login feedback | TC-M-03 | `invalid-login` | `invalid-login` |
-| R-13 | Invoice in My Invoices | TC-M-02 | `checkout.smoke` | `invoice.api` |
-| R-14 | UI ↔ API invoice match | TC-M-07 | `ui-api-invoice` | `invoice.api` |
+| R-13 | Invoice in My Invoices | TC-M-02, TC-M-11 | `checkout.smoke`, `invoice-details` | `invoice.api` |
+| R-14 | UI ↔ API invoice match | TC-M-07, TC-M-11 | `ui-api-invoice`, `invoice-details` | `invoice.api` |
 
 Full risk definitions: [`planning.md`](planning.md) §2.
 

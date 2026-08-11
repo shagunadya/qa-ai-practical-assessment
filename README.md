@@ -296,7 +296,7 @@ npx playwright test --project=api --grep @regression
 
 | Suite | Specs |
 |-------|-------|
-| UI regression (6) | `invalid-login`, `duplicate-registration`, `empty-cart`, `single-confirm`, `ui-api-invoice`, `cod-payment` |
+| UI regression (9) | `invalid-login`, `duplicate-registration`, `empty-cart`, `single-confirm`, `ui-api-invoice`, `cod-payment`, `registration`, `logout`, `invoice-details` |
 | API regression (5) | `register`, `duplicate-register`, `invalid-login`, `cart`, `invoice` |
 
 ---
@@ -464,7 +464,7 @@ Full list: [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md). Summa
 | Limitation | Detail |
 |------------|--------|
 | **Shared demo environment** | Public Toolshop; lockout (`423`) and cart pollution — use `--workers=1` and dynamic users |
-| **Assessment test cap** | Guideline 5–8/layer; repo has 9 UI + 9 API tests |
+| **Assessment test cap** | Guideline 5–8/layer; repo has 12 UI + 9 API tests |
 | **Chromium only** | No Firefox/WebKit projects |
 | **No CI pipeline** | Local runs only |
 | **Execution evidence** | Committed under `evidence/reports/` — see [`evidence/EXECUTION-DEMO.md`](evidence/EXECUTION-DEMO.md) |

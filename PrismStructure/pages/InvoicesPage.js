@@ -45,6 +45,29 @@ class InvoicesPage extends BasePage {
   }
 
   /**
+   * Collect visible money amounts on the invoice detail page.
+   * @returns {Promise<number[]>}
+   */
+  async getDetailPageAmounts() {
+    const detailText = await this.page.locator('body').innerText();
+    return [...detailText.matchAll(/\$[\d,]+(?:\.\d{2})?/g)].map((match) =>
+      parseMoney(match[0]),
+    );
+  }
+
+  invoiceDetailProduct(productName) {
+    return this.page.getByRole('cell', { name: productName, exact: true });
+  }
+
+  get invoiceNumberField() {
+    return this.page.getByRole('textbox', { name: /invoice number/i });
+  }
+
+  get invoiceTotalField() {
+    return this.page.getByRole('textbox', { name: /^total$/i });
+  }
+
+  /**
    * Find invoice row whose total matches expected cart/order total.
    * @param {number} expectedTotal
    * @param {number} [precision=0.02]

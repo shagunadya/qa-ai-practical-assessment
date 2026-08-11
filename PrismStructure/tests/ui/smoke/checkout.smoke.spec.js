@@ -74,7 +74,15 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
 
     await invoicesPage.openInvoiceDetails(invoiceNumber);
     await expect(invoicesPage.page).toHaveURL(/\/account\/invoices\//);
-    await expect(invoicesPage.page.getByText(productA)).toBeVisible();
-    await expect(invoicesPage.page.getByText(productB)).toBeVisible();
+    await expect(invoicesPage.invoiceNumberField).toHaveValue(invoiceNumber);
+    await expect(invoicesPage.invoiceDetailProduct(productA)).toBeVisible();
+    await expect(invoicesPage.invoiceDetailProduct(productB)).toBeVisible();
+
+    const detailAmounts = await invoicesPage.getDetailPageAmounts();
+    expect(
+      detailAmounts.some(
+        (amount) => Math.abs(amount - invoiceDetails.totalAmount) <= 0.02,
+      ),
+    ).toBe(true);
   });
 });

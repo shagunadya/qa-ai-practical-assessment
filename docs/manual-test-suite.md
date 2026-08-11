@@ -12,10 +12,10 @@
 
 | Metric | Count |
 |--------|-------|
-| **Total manual cases** | 8 |
+| **Total manual cases** | 11 |
 | **Smoke** | 2 (TC-M-01, TC-M-02) |
-| **Regression** | 6 (TC-M-03 … TC-M-08) |
-| **Positive** | 3 |
+| **Regression** | 9 (TC-M-03 … TC-M-11) |
+| **Positive** | 6 |
 | **Negative** | 4 |
 | **Edge** | 1 |
 
@@ -27,7 +27,7 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 
 | Scenario type | Definition | Manual TCs | What is exercised |
 |---------------|------------|------------|-------------------|
-| **Positive** | Valid data; happy-path user journeys | TC-M-01, TC-M-02, TC-M-07 | Register/login/profile; full COD purchase; UI↔API invoice match |
+| **Positive** | Valid data; happy-path user journeys | TC-M-01, TC-M-02, TC-M-07, TC-M-09, TC-M-10, TC-M-11 | Register/login/profile/logout; full COD purchase; UI↔API invoice; registration; session end; invoice details |
 | **Negative** | Invalid input or wrong preconditions | TC-M-03, TC-M-04, TC-M-05, TC-M-08 | Wrong password; duplicate email; empty-cart checkout; COD not selected |
 | **Edge** | Application-specific boundary behaviour | TC-M-06 | Single Confirm vs required double Confirm (R-01) |
 | **Boundary (within positive)** | Limits on valid flows | TC-M-02 (qty 1→2) | Quantity update before checkout (R-08) |
@@ -64,7 +64,7 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 
 ## 3. Smoke suite
 
-### TC-M-01 — Register, login, and verify profile
+### TC-M-01 — Register, login, verify profile, and logout
 
 | Field | Value |
 |-------|-------|
@@ -98,14 +98,18 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 4. Open the login page.
 5. Log in with the same email and password.
 6. Open profile from the account menu (`nav-profile`).
+7. Open account menu and click **Sign out**.
 
 **Expected results**
 
 - Registration completes without error.
 - Login succeeds; account menu shows authenticated state (e.g. display name).
 - Profile shows first name **John**, last name **Doe**, and email matching registration.
+- After Sign out, **Sign in** is visible and profile requires login again.
 
-**Pass criteria:** All three expected results observed.
+**Pass criteria:** Registration, login, profile, and logout behaviours observed.
+
+**UI automation:** `PrismStructure/tests/ui/smoke/auth.smoke.spec.js`, `registration.regression.spec.js`, `logout.regression.spec.js`
 
 ---
 
@@ -156,6 +160,8 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 10. Click **Confirm** a **second** time.
 11. Open **My Invoices**.
 12. Record `invoice_number` and order **total** for the new invoice.
+13. Click **Details** on the new invoice row.
+14. Verify invoice number, product line items, and total on the detail page.
 
 **Expected results**
 
@@ -163,8 +169,11 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 - Quantity change reflected in totals before checkout.
 - COD selected; checkout reaches Confirm step.
 - After **second** Confirm, My Invoices shows new invoice with `INV-*` number and total consistent with pre-checkout cart.
+- Invoice **detail** page lists both products and a total matching the list row / cart.
 
-**Pass criteria:** Invoice visible in My Invoices only after second Confirm; totals consistent.
+**Pass criteria:** Invoice visible in My Invoices only after second Confirm; totals consistent; detail page verified.
+
+**UI automation:** `checkout.smoke.spec.js`, `invoice-details.regression.spec.js`
 
 ---
 
@@ -304,6 +313,76 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 
 ---
 
+### TC-M-09 — Registration creates account with working login
+
+| Field | Value |
+|-------|-------|
+| **Scenario ID** | SC-REG-NEW-USER |
+| **Type** | Positive |
+| **Priority** | High |
+| **Risks** | R-05, R-11 |
+| **UI automation** | `PrismStructure/tests/ui/regression/registration.regression.spec.js` |
+
+**Test data:** Dynamic user via `buildRegistrationUser()` — unique email and password.
+
+**Steps**
+
+1. Open registration page; complete all required fields.
+2. Submit registration.
+3. Log in with new credentials (if not auto-signed-in).
+4. Open profile.
+
+**Expected results:** Registration leaves `/auth/register`; login succeeds; profile shows registered name and email.
+
+---
+
+### TC-M-10 — Logout ends authenticated session
+
+| Field | Value |
+|-------|-------|
+| **Scenario ID** | SC-LOGOUT |
+| **Type** | Positive |
+| **Priority** | High |
+| **Risks** | R-05 |
+| **UI automation** | `PrismStructure/tests/ui/regression/logout.regression.spec.js` |
+
+**Test data:** Dynamic user (register + login).
+
+**Steps**
+
+1. Log in; verify account menu shows user name.
+2. Open account menu → **Sign out**.
+3. Navigate directly to `/account/profile`.
+
+**Expected results:** **Sign in** visible after logout; profile URL redirects to login; login form shown.
+
+---
+
+### TC-M-11 — Invoice detail page verification
+
+| Field | Value |
+|-------|-------|
+| **Scenario ID** | SC-INV-DETAILS |
+| **Type** | Positive |
+| **Priority** | High |
+| **Risks** | R-13, R-14 |
+| **UI automation** | `PrismStructure/tests/ui/regression/invoice-details.regression.spec.js` |
+
+**Preconditions:** Seeded user logged in; at least one invoice exists in My Invoices (from prior checkout on shared demo account).
+
+**Test data:** Seeded user `customer@practicesoftwaretesting.com` / `welcome01`.
+
+**Steps**
+
+1. Log in and open **My Invoices**.
+2. Select the newest invoice row (`INV-*`).
+3. Click **Details**.
+4. Verify invoice number, product line item(s), and total on the detail page.
+
+**Expected results:** Detail URL under `/account/invoices/`; invoice number visible; product shown; total matches list row / cart total.
+
+---
+
 ## 6. Execution notes
 
 | Topic | Guidance |
@@ -322,3 +401,6 @@ All cases include **preconditions**, **test data**, **numbered steps**, and **ob
 | TC-M-01 | `auth.smoke.spec.js` | `auth-lifecycle.smoke.api.spec.js` |
 | TC-M-02 | `checkout.smoke.spec.js` | `cart.smoke`, `invoice.api` (lifecycle) |
 | TC-M-03 … TC-M-08 | Matching `*.regression.spec.js` | See [`traceability-matrix.md`](traceability-matrix.md) §2 |
+| TC-M-09 | `registration.regression.spec.js` | — |
+| TC-M-10 | `logout.regression.spec.js` | — |
+| TC-M-11 | `invoice-details.regression.spec.js` | — |
