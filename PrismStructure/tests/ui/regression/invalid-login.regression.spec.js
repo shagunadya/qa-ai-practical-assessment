@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-03 Invalid login @regression', () => {
+test.describe('TC-M-03 UI-AC1 Invalid login @regression', () => {
   test('Negative: login rejected with incorrect password @regression', async ({
     loginPage,
     page,

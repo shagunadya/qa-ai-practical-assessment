@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { ToolshopApiClient } = require('../../../api/ToolshopApiClient');
 
-test.describe('API products catalog @smoke', () => {
+test.describe('API-AC2 Products catalog @smoke', () => {
   test('GET products returns in-stock items @smoke', async ({ request }) => {
     const client = new ToolshopApiClient(request);
     const response = await client.getProducts();

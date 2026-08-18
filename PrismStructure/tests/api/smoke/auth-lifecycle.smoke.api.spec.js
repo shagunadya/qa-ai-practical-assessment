@@ -4,7 +4,7 @@ const {
   expectLoginSuccess,
 } = require('../../../api/api-assertions');
 
-test.describe('API register and login lifecycle @smoke', () => {
+test.describe('API-AC1 Register and login lifecycle @smoke', () => {
   test('register synthetic user authenticate and capture bearer token @smoke', async ({
     apiClient,
     registrationBody,

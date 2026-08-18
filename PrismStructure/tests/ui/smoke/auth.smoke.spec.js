@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-01 Registration login profile @smoke', () => {
+test.describe('TC-M-01 UI-AC1 Registration login profile @smoke', () => {
   test('register new user login verify profile and logout @smoke', async ({
     page,
     registerPage,

@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-04 Duplicate registration @regression', () => {
+test.describe('TC-M-04 UI-AC1 Duplicate registration @regression', () => {
   test('Negative: registration rejected for duplicate email @regression', async ({
     registerPage,
     page,

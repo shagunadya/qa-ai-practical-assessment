@@ -8,7 +8,7 @@ const {
   expectCartContainsProducts,
 } = require('../../../api/api-assertions');
 
-test.describe('API cart lifecycle @regression', () => {
+test.describe('API-AC1 Cart lifecycle @regression', () => {
   test('create cart add products and verify cart @regression', async ({
     registeredUser,
   }) => {

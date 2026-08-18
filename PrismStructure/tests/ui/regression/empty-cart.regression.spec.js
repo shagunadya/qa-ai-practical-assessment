@@ -1,6 +1,6 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 
-test.describe('TC-M-05 Empty cart checkout @regression', () => {
+test.describe('TC-M-05 UI-AC2 Empty cart checkout @regression', () => {
   test('Negative: checkout blocked when cart is empty @regression', async ({
     loginPage,
     productsPage,

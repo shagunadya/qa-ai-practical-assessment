@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-08 COD payment selected @regression', () => {
+test.describe('TC-M-08 UI-AC2 COD payment selected @regression', () => {
   test('Cash on Delivery selected before Confirm @regression', async ({
     loginPage,
     productsPage,

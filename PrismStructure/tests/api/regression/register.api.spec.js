@@ -4,7 +4,7 @@ const {
   expectLoginSuccess,
 } = require('../../../api/api-assertions');
 
-test.describe('API register @regression', () => {
+test.describe('API-AC1 Register user @regression', () => {
   test('POST users register creates new user @regression', async ({
     apiClient,
     registrationBody,

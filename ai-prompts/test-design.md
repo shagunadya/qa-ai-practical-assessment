@@ -32,6 +32,16 @@ Prompts used to design manual and automated test cases (smoke, regression, posit
 | **QA decision** | **Accept** manual suite; proceed to automation shortlist (Chain TD2). |
 | **Artefacts** | `FunctionalTestCase.csv` (committed) |
 
+### Iteration TD1.3 — Cap alignment (2026-08-18)
+
+| Field | Content |
+|-------|---------|
+| **Prompt** | Evaluator audit: manual/UI/API counts must stay within 5–8 per layer. Consolidate overlapping cases. |
+| **AI response** | Removed TC-M-09–11 from CSV (logout covered in TC-M-01; invoice details in TC-M-02). Removed duplicate UI/API specs (`foundation`, `registration`, `logout`, `invoice-details`, `auth.smoke.api`). |
+| **Outcome** | **8 manual**, **8 UI**, **8 API** automated tests. |
+| **QA decision** | **Accept** — traceability updated in `docs/traceability-matrix.md`. |
+| **Artefacts** | `FunctionalTestCase.csv`, `PrismStructure/tests/` |
+
 ---
 
 ## Chain TD2 — Smoke / regression classification & cap

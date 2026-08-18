@@ -17,7 +17,7 @@ This matrix links **assessment flows**, **manual cases**, **automation**, **risk
 |---------|-------------|--------|---------|----------|----------|------|
 | **UI-AC1** | Register → login → profile | TC-M-01 | `auth.smoke.spec.js` | `auth-lifecycle.smoke.api.spec.js` | [`test-strategy.md`](test-strategy.md) §4 | [`test-data-strategy.md`](test-data-strategy.md) §1 |
 | **UI-AC2** | Multi-product COD + 2× Confirm + My Invoices | TC-M-02 | `checkout.smoke.spec.js` | ⚠️ cart/invoice in API suite | §4, §7 | §2, §5–8 |
-| **API-AC1** | Register/login → Bearer → cart | — | — | `auth.smoke`, `auth-lifecycle`, `cart.smoke` | §5 | §1, §9 |
+| **API-AC1** | Register/login → Bearer → cart | — | — | `auth-lifecycle`, `cart.smoke` | §5 | §1, §9 |
 | **API-AC2** | Products → cart → invoice (COD) | — | — | `products.smoke`, `invoice.api` | §5 | §5–9 |
 
 ---
@@ -34,11 +34,10 @@ This matrix links **assessment flows**, **manual cases**, **automation**, **risk
 | TC-M-06 | SC-INV-SINGLE-CONFIRM | Edge | Regression | ✅ | `ui/regression/single-confirm.regression.spec.js` | — | R-01 | §2, §5, §7–8 |
 | TC-M-07 | SC-UI-API-INVOICE-MATCH | Positive | Regression | ✅ | `ui/regression/ui-api-invoice.regression.spec.js` | `api/regression/invoice.api.spec.js` | R-13, R-14 | §2, §8–9 |
 | TC-M-08 | SC-COD-PAYMENT-SELECTED | Negative | Regression | ✅ | `ui/regression/cod-payment.regression.spec.js` | — | R-02 | §2, §5, §7 |
-| TC-M-09 | SC-REG-NEW-USER | Positive | Regression | ✅ | `ui/regression/registration.regression.spec.js` | — | R-05, R-11 | Registration §1 |
-| TC-M-10 | SC-LOGOUT | Positive | Regression | ✅ | `ui/regression/logout.regression.spec.js` | — | R-05 | Registration §1 |
-| TC-M-11 | SC-INV-DETAILS | Positive | Regression | ✅ | `ui/regression/invoice-details.regression.spec.js` | — | R-13, R-14 | §2 (seeded user) |
 
 Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and negative/edge catalog: [`manual-test-suite.md`](manual-test-suite.md).
+
+**Note:** Logout (TC-M-01 steps) and invoice detail checks (TC-M-02 steps) are covered in smoke specs — not separate manual rows, to stay within the 5–8 case cap.
 
 ---
 
@@ -46,7 +45,6 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 
 | Spec file | Tag | Maps to manual | Assessment flow | Primary risks |
 |-----------|-----|----------------|-----------------|---------------|
-| `foundation.smoke.spec.js` | `@smoke` | — (wiring) | — | — |
 | `auth.smoke.spec.js` | `@smoke` | TC-M-01 | UI-AC1 | R-05, R-11 |
 | `checkout.smoke.spec.js` | `@smoke` | TC-M-02 | UI-AC2 | R-01–R-04, R-08, R-10, R-13 |
 | `invalid-login.regression.spec.js` | `@regression` | TC-M-03 | — | R-07, R-12 |
@@ -54,12 +52,9 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | `empty-cart.regression.spec.js` | `@regression` | TC-M-05 | — | R-04, R-09 |
 | `single-confirm.regression.spec.js` | `@regression` | TC-M-06 | — | R-01 |
 | `ui-api-invoice.regression.spec.js` | `@regression` | TC-M-07 | — | R-13, R-14 |
-| `cod-payment.regression.spec.js` | `@regression` | TC-M-08 | — | R-02 |
-| `registration.regression.spec.js` | `@regression` | TC-M-09 | UI-AC1 | R-05, R-11 |
-| `logout.regression.spec.js` | `@regression` | TC-M-10 | UI-AC1 | R-05 |
-| `invoice-details.regression.spec.js` | `@regression` | TC-M-11 | UI-AC2 | R-13, R-14 |
+| `cod-payment.regression.spec.js` | `@regression` | TC-M-08 | UI-AC2 | R-02 |
 
-**Count:** 12 UI specs (includes 1 foundation connectivity check; assessment cap note in [`planning.md`](planning.md) §1).
+**Count:** 8 UI specs (2 smoke + 6 regression; within assessment 5–8 cap per layer).
 
 ---
 
@@ -68,7 +63,6 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | Spec file | Tag | Maps to manual / flow | Primary risks |
 |-----------|-----|----------------------|---------------|
 | `auth-lifecycle.smoke.api.spec.js` | `@smoke` | TC-M-01 / API-AC1 | R-05, R-11 |
-| `auth.smoke.api.spec.js` | `@smoke` | API-AC1 (seeded login) | R-05, R-07 |
 | `cart.smoke.api.spec.js` | `@smoke` | API-AC1 | R-03, R-10 |
 | `products.smoke.api.spec.js` | `@smoke` | API-AC2 | — |
 | `register.api.spec.js` | `@regression` | TC-M-01 pattern | R-11 |
@@ -77,7 +71,7 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | `cart.api.spec.js` | `@regression` | TC-M-02 (multi-product) | R-03, R-10 |
 | `invoice.api.spec.js` | `@regression` | TC-M-07 / API-AC2 | R-13, R-14 |
 
-**Count:** 9 API specs (assessment cap note in [`planning.md`](planning.md) §1).
+**Count:** 8 API specs (3 smoke + 5 regression; within assessment 5–8 cap per layer).
 
 ---
 
@@ -89,7 +83,7 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | R-02 | COD must be selected | TC-M-02, TC-M-08 | `checkout.smoke`, `cod-payment` | `invoice.api` |
 | R-03 | Cart persistence / race | TC-M-02 | `checkout.smoke` | `cart.smoke`, `cart.api` |
 | R-04 | Empty cart checkout | TC-M-05 | `empty-cart` | — |
-| R-05 | Auth/session failure | TC-M-01, TC-M-09, TC-M-10 | `auth.smoke`, `registration`, `logout` | `auth-lifecycle`, `auth.smoke` |
+| R-05 | Auth/session failure | TC-M-01 | `auth.smoke` | `auth-lifecycle` |
 | R-06 | Token timing | — | — | Fixtures (fresh login) |
 | R-07 | Demo lockout (423) | TC-M-03 | `invalid-login` | `invalid-login` |
 | R-08 | Qty update before checkout | TC-M-02 | `checkout.smoke` | `cart.api` |
@@ -97,8 +91,8 @@ Source: [`FunctionalTestCase.csv`](../FunctionalTestCase.csv) · Full steps and 
 | R-10 | Multi-product cart | TC-M-02 | `checkout.smoke` | `cart.smoke`, `cart.api` |
 | R-11 | Registration failures | TC-M-01, TC-M-04 | `auth.smoke`, `duplicate-registration` | `register`, `duplicate-register` |
 | R-12 | Invalid login feedback | TC-M-03 | `invalid-login` | `invalid-login` |
-| R-13 | Invoice in My Invoices | TC-M-02, TC-M-11 | `checkout.smoke`, `invoice-details` | `invoice.api` |
-| R-14 | UI ↔ API invoice match | TC-M-07, TC-M-11 | `ui-api-invoice`, `invoice-details` | `invoice.api` |
+| R-13 | Invoice in My Invoices | TC-M-02 | `checkout.smoke` | `invoice.api` |
+| R-14 | UI ↔ API invoice match | TC-M-07 | `ui-api-invoice` | `invoice.api` |
 
 Full risk definitions: [`planning.md`](planning.md) §2.
 
@@ -106,17 +100,17 @@ Full risk definitions: [`planning.md`](planning.md) §2.
 
 ## 6. Test data → manual TC
 
-| Data set (see `test-data-strategy.md`) | TC-M-01 | TC-M-02 | TC-M-03 | TC-M-04 | TC-M-05 | TC-M-06 | TC-M-07 | TC-M-08 | TC-M-09 | TC-M-10 | TC-M-11 |
-|----------------------------------------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-| §1 Registration | ✅ | | | | | | | | ✅ | ✅ | |
-| §2 Seeded user | | ✅ | | | ✅ | ✅ | ✅ | ✅ | | | ✅ |
-| §3 Invalid login | | | ✅ | | | | | | | | |
-| §4 Duplicate register | | | | ✅ | | | | | | | |
-| §5 Products | | ✅ | | | | ✅ | | ✅ | | | |
-| §6 Cart qty | | ✅ | | | | | | | | | |
-| §7 Checkout / COD | | ✅ | | | | ✅ | | ✅ | | | |
-| §8 Invoice capture | | ✅ | | | | ✅ | ✅ | | | | ✅ |
-| §9 API payloads | | | | | | | ✅ | | | | |
+| Data set (see `test-data-strategy.md`) | TC-M-01 | TC-M-02 | TC-M-03 | TC-M-04 | TC-M-05 | TC-M-06 | TC-M-07 | TC-M-08 |
+|----------------------------------------|---------|---------|---------|---------|---------|---------|---------|---------|
+| §1 Registration | ✅ | | | | | | | |
+| §2 Seeded user | | ✅ | | | ✅ | ✅ | ✅ | ✅ |
+| §3 Invalid login | | | ✅ | | | | | |
+| §4 Duplicate register | | | | ✅ | | | | |
+| §5 Products | | ✅ | | | | ✅ | | ✅ |
+| §6 Cart qty | | ✅ | | | | | | |
+| §7 Checkout / COD | | ✅ | | | | ✅ | | ✅ |
+| §8 Invoice capture | | ✅ | | | | ✅ | ✅ | |
+| §9 API payloads | | | | | | | ✅ | |
 
 Code modules: `PrismStructure/data/ui-test-data.js`, `api-test-data.js`.
 

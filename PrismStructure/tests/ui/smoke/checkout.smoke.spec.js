@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
+test.describe('TC-M-02 UI-AC2 COD checkout double confirm @smoke', () => {
   test('multi-product cart qty update COD checkout and My Invoices @smoke', async ({
     loginPage,
     productsPage,
@@ -16,6 +16,8 @@ test.describe('TC-M-02 COD checkout double confirm @smoke', () => {
 
     await loginPage.open();
     await loginPage.login(seededCredentials.email, seededCredentials.password);
+
+    await cartPage.clearLineItems();
 
     await invoicesPage.openViaMenu();
     const invoicesBefore = new Set(await invoicesPage.collectInvoiceNumbers());

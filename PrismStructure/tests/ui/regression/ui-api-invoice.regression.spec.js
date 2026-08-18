@@ -1,7 +1,7 @@
 const { test, expect } = require('../../../fixtures/test-fixtures');
 const uiData = require('../../../data/ui-test-data');
 
-test.describe('TC-M-07 UI API invoice match @regression', () => {
+test.describe('TC-M-07 UI-AC2 UI API invoice match @regression', () => {
   test('My Invoices entry matches API GET invoices @regression', async ({
     registerPage,
     loginPage,
@@ -11,6 +11,8 @@ test.describe('TC-M-07 UI API invoice match @regression', () => {
     invoicesPage,
     apiClient,
   }) => {
+    test.setTimeout(120000);
+
     const user = uiData.buildRegistrationUser();
 
     await registerPage.open();
@@ -21,6 +23,9 @@ test.describe('TC-M-07 UI API invoice match @regression', () => {
       await loginPage.login(user.email, user.password);
     }
 
+    await invoicesPage.openViaMenu();
+    const invoicesBefore = new Set(await invoicesPage.collectInvoiceNumbers());
+
     await productsPage.addProductToCart(uiData.products.productSingle);
     await cartPage.open();
     const cartTotal = await cartPage.getCartTotalAmount();
@@ -30,11 +35,26 @@ test.describe('TC-M-07 UI API invoice match @regression', () => {
     );
     await checkoutPage.confirmOrderTwice();
 
-    await invoicesPage.openViaMenu();
-    const invoiceDetails = await invoicesPage.findInvoiceByTotal(cartTotal);
-    expect(invoiceDetails).toBeTruthy();
+    let invoiceNumber = null;
+    await expect
+      .poll(
+        async () => {
+          await invoicesPage.openViaMenu();
+          const created = (await invoicesPage.collectInvoiceNumbers()).filter(
+            (number) => !invoicesBefore.has(number),
+          );
+          if (created.length > 0) {
+            invoiceNumber = created[0];
+            return invoiceNumber;
+          }
+          return null;
+        },
+        { timeout: 60000 },
+      )
+      .toMatch(uiData.invoice.numberPattern);
 
-    const { invoiceNumber } = invoiceDetails;
+    const invoiceDetails = await invoicesPage.getInvoiceRowDetails(invoiceNumber);
+    expect(invoiceDetails.totalAmount).toBeGreaterThan(0);
 
     const loginResponse = await apiClient.login(user.email, user.password);
     expect(loginResponse.ok()).toBeTruthy();

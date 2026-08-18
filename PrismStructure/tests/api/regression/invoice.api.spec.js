@@ -5,7 +5,7 @@ const {
   expectInvoiceListed,
 } = require('../../../api/api-assertions');
 
-test.describe('API invoice COD @regression', () => {
+test.describe('API-AC2 Invoice COD @regression', () => {
   test('generate cash-on-delivery invoice from cart @regression', async ({
     cartWithProducts,
   }) => {
