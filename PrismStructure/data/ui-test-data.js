@@ -9,7 +9,7 @@ const registration = {
   password: 'SuperSecure@123',
   dob: '1970-01-01',
   country: 'United States of America (the)',
-  postalCode: '1234AA',
+  postalCode: '32801',
   houseNumber: '42',
   street: 'Synthetic Street',
   city: 'Testville',
@@ -89,6 +89,54 @@ function buildRegistrationUser(suffix = Date.now()) {
   };
 }
 
+/**
+ * Map API profile address to UI checkout billing fields.
+ * @param {object} [address]
+ */
+function normalizeUiCountry(country) {
+  const value = String(country || '').trim().toLowerCase();
+  if (!value) {
+    return checkout.billingAddress.country;
+  }
+  if (value === 'nl' || value.includes('netherlands')) {
+    return 'Netherlands';
+  }
+  if (
+    value === 'us' ||
+    value === 'usa' ||
+    value.includes('united states')
+  ) {
+    return 'United States of America (the)';
+  }
+  return String(country);
+}
+
+function mapProfileToUiBilling(address = {}, registrationUser = null) {
+  const registrationFallback = registrationUser
+    ? {
+        street: registrationUser.street,
+        city: registrationUser.city,
+        state: registrationUser.state,
+        country: normalizeUiCountry(registrationUser.country),
+        postalCode: registrationUser.postalCode,
+        houseNumber: registrationUser.houseNumber,
+      }
+    : checkout.billingAddress;
+
+  return {
+    street: String(address.street || registrationFallback.street),
+    city: String(address.city || registrationFallback.city),
+    state: String(address.state || registrationFallback.state),
+    country: normalizeUiCountry(address.country || registrationFallback.country),
+    postalCode: String(
+      address.postal_code || registrationFallback.postalCode,
+    ),
+    houseNumber: String(
+      address.house_number || registrationFallback.houseNumber || '1',
+    ),
+  };
+}
+
 module.exports = {
   registration,
   seededUser,
@@ -99,4 +147,5 @@ module.exports = {
   checkout,
   invoice,
   buildRegistrationUser,
+  mapProfileToUiBilling,
 };

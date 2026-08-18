@@ -30,7 +30,7 @@ class InvoicesPage extends BasePage {
   }
 
   invoiceRowByNumber(invoiceNumber) {
-    return this.page.getByRole('row').filter({ hasText: invoiceNumber });
+    return this.page.getByRole('row').filter({ hasText: invoiceNumber }).first();
   }
 
   detailsLinkForInvoice(invoiceNumber) {

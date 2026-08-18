@@ -11,11 +11,13 @@
 | Suite | Command | Exit | Result | Duration | Log | HTML report |
 |-------|---------|------|--------|----------|-----|-------------|
 | **Smoke** | `npm run test:smoke -- --workers=1` | 0 | **5/5 passed** | ~57s | [`smoke_2026-08-18.log`](smoke_2026-08-18.log) | [`playwright-html-report_2026-08-18_smoke/`](playwright-html-report_2026-08-18_smoke/index.html) |
+| **Full** | `npm test -- --workers=1` | 0 | **16/16 passed** | ~2.8m | [`full_2026-08-18.log`](full_2026-08-18.log) | [`playwright-html-report_2026-08-18_full/`](playwright-html-report_2026-08-18_full/index.html) |
 
 ### Smoke notes (2026-08-18)
 
 - `checkout.smoke.spec.js` stabilized: session re-login after cart clear, step-aware billing, API in-stock product pick, invoice list via account menu.
-- Shared demo SUT: `Combination Pliers` can show out of stock — checkout smoke uses `fetchInStockProducts(2)` at runtime.
+- Shared demo SUT: `Combination Pliers` can show out of stock — checkout/regression UI specs use `fetchInStockProducts()` at runtime.
+- Full suite green after regression billing/profile fixes and duplicate invoice row handling.
 
 ---
 
@@ -57,6 +59,7 @@ See [`ui_2026-08-11.log`](ui_2026-08-11.log) for pass/fail breakdown. Serial run
 ## View reports
 
 ```bash
+npx playwright show-report evidence/reports/playwright-html-report_2026-08-18_full
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-18_smoke
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_smoke
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_regression
