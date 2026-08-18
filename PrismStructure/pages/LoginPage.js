@@ -56,6 +56,19 @@ class LoginPage extends BasePage {
     });
   }
 
+  /**
+   * Re-authenticate when checkout or direct navigation drops the UI session.
+   */
+  async ensureLoggedIn(email, password) {
+    if (await this.accountMenu.isVisible()) {
+      return;
+    }
+
+    await this.open();
+    await this.login(email, password);
+    await this.accountMenu.waitFor({ state: 'visible', timeout: 15000 });
+  }
+
   signedInAs(displayName) {
     return this.page
       .getByRole('button', { name: displayName })

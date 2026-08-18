@@ -56,13 +56,14 @@ const cart = {
 
 const checkout = {
   paymentMethodLabel: 'Cash on Delivery',
+  /** Jane Doe seeded profile (NL) — avoids invoice API 422 on shared demo user */
   billingAddress: {
-    street: 'Synthetic Street',
-    city: 'Testville',
-    state: 'Florida',
-    country: 'United States of America (the)',
-    postalCode: '1234AA',
-    houseNumber: '42',
+    street: 'Kanhaistraat',
+    city: 'Scherpenzeel',
+    state: 'Groningen',
+    country: 'Netherlands',
+    postalCode: '1122AB',
+    houseNumber: '1',
   },
 };
 

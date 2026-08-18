@@ -6,7 +6,20 @@
 
 ---
 
-## Latest runs (2026-08-11)
+## Latest runs (2026-08-18)
+
+| Suite | Command | Exit | Result | Duration | Log | HTML report |
+|-------|---------|------|--------|----------|-----|-------------|
+| **Smoke** | `npm run test:smoke -- --workers=1` | 0 | **5/5 passed** | ~57s | [`smoke_2026-08-18.log`](smoke_2026-08-18.log) | [`playwright-html-report_2026-08-18_smoke/`](playwright-html-report_2026-08-18_smoke/index.html) |
+
+### Smoke notes (2026-08-18)
+
+- `checkout.smoke.spec.js` stabilized: session re-login after cart clear, step-aware billing, API in-stock product pick, invoice list via account menu.
+- Shared demo SUT: `Combination Pliers` can show out of stock — checkout smoke uses `fetchInStockProducts(2)` at runtime.
+
+---
+
+## Previous runs (2026-08-11)
 
 | Suite | Command | Exit | Result | Duration | Log | HTML report |
 |-------|---------|------|--------|----------|-----|-------------|
@@ -44,6 +57,7 @@ See [`ui_2026-08-11.log`](ui_2026-08-11.log) for pass/fail breakdown. Serial run
 ## View reports
 
 ```bash
+npx playwright show-report evidence/reports/playwright-html-report_2026-08-18_smoke
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_smoke
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_regression
 npx playwright show-report evidence/reports/playwright-html-report_2026-08-11_ui

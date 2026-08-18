@@ -1,3 +1,4 @@
+const { expect } = require('@playwright/test');
 const { BasePage } = require('./BasePage');
 
 class ProductsPage extends BasePage {
@@ -71,6 +72,7 @@ class ProductsPage extends BasePage {
       },
       { timeout: 15000 },
     );
+    await expect(this.addToCartButton).toBeEnabled({ timeout: 15000 });
     await this.addToCartButton.click();
     await lineItemAdd;
   }

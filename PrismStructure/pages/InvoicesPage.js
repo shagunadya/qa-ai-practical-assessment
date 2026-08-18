@@ -50,9 +50,14 @@ class InvoicesPage extends BasePage {
    */
   async getDetailPageAmounts() {
     const detailText = await this.page.locator('body').innerText();
-    return [...detailText.matchAll(/\$[\d,]+(?:\.\d{2})?/g)].map((match) =>
+    return [...detailText.matchAll(/\$\s*[\d,]+(?:\.\d{2})?/g)].map((match) =>
       parseMoney(match[0]),
     );
+  }
+
+  async getDetailPageTotal() {
+    const text = await this.invoiceTotalField.inputValue();
+    return parseMoney(text);
   }
 
   invoiceDetailProduct(productName) {
@@ -84,7 +89,7 @@ class InvoicesPage extends BasePage {
       const row = this.invoiceRows.nth(index);
       const rowText = await row.innerText();
       const numberMatch = rowText.match(this.invoiceNumberPattern);
-      const totalMatch = rowText.match(/\$[\d,]+(?:\.\d{2})?/);
+      const totalMatch = rowText.match(/\$\s*[\d,]+(?:\.\d{2})?/);
 
       if (!numberMatch || !totalMatch) {
         continue;
@@ -120,7 +125,7 @@ class InvoicesPage extends BasePage {
     const row = this.invoiceRowByNumber(invoiceNumber);
     await row.waitFor({ state: 'visible', timeout: 15000 });
     const rowText = await row.innerText();
-    const totalMatch = rowText.match(/\$[\d,]+(?:\.\d{2})?/);
+    const totalMatch = rowText.match(/\$\s*[\d,]+(?:\.\d{2})?/);
 
     return {
       invoiceNumber,
@@ -187,6 +192,42 @@ class InvoicesPage extends BasePage {
     }
 
     return numbers;
+  }
+
+  /**
+   * Newest INV-* (highest numeric suffix) not present in `beforeNumbers`.
+   * @param {Set<string> | string[]} beforeNumbers
+   */
+  async findNewestInvoiceSince(beforeNumbers) {
+    const before =
+      beforeNumbers instanceof Set
+        ? beforeNumbers
+        : new Set(beforeNumbers);
+    const created = (await this.collectInvoiceNumbers()).filter(
+      (number) => !before.has(number),
+    );
+
+    if (created.length === 0) {
+      return null;
+    }
+
+    let newestNumber = created[0];
+    let newestSuffix = -1;
+
+    for (const number of created) {
+      const match = number.match(/INV-(\d+)/);
+      if (!match) {
+        continue;
+      }
+
+      const suffix = Number(match[1]);
+      if (suffix > newestSuffix) {
+        newestSuffix = suffix;
+        newestNumber = number;
+      }
+    }
+
+    return newestNumber;
   }
 }
 

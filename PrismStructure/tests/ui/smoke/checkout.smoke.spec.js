@@ -9,18 +9,35 @@ test.describe('TC-M-02 UI-AC2 COD checkout double confirm @smoke', () => {
     checkoutPage,
     invoicesPage,
     seededCredentials,
+    apiClient,
   }) => {
     test.setTimeout(120000);
 
-    const { productA, productB } = uiData.products;
+    const loginResponse = await apiClient.login(
+      seededCredentials.email,
+      seededCredentials.password,
+    );
+    expect(loginResponse.ok()).toBeTruthy();
+
+    const { products: inStockProducts } = await apiClient.fetchInStockProducts(2);
+    expect(inStockProducts.length).toBeGreaterThanOrEqual(2);
+    const [productA, productB] = inStockProducts.map((product) => product.name);
 
     await loginPage.open();
     await loginPage.login(seededCredentials.email, seededCredentials.password);
+    await expect(loginPage.accountMenu).toBeVisible({ timeout: 15000 });
 
     await cartPage.clearLineItems();
+    await loginPage.ensureLoggedIn(
+      seededCredentials.email,
+      seededCredentials.password,
+    );
+    await cartPage.clearLineItems();
 
-    await invoicesPage.openViaMenu();
-    const invoicesBefore = new Set(await invoicesPage.collectInvoiceNumbers());
+    await loginPage.ensureLoggedIn(
+      seededCredentials.email,
+      seededCredentials.password,
+    );
 
     await productsPage.open();
     await productsPage.addProductsToCart([productA, productB]);
@@ -37,42 +54,45 @@ test.describe('TC-M-02 UI-AC2 COD checkout double confirm @smoke', () => {
     expect(cartTotal).toBeGreaterThan(0);
 
     await cartPage.proceedToCheckout();
+    await loginPage.ensureLoggedIn(
+      seededCredentials.email,
+      seededCredentials.password,
+    );
     await checkoutPage.completeCashOnDeliveryCheckout(
       uiData.checkout.billingAddress,
     );
 
     const confirmResult = await checkoutPage.confirmOrderTwice();
+    expect(
+      confirmResult.status,
+      `Invoice create failed: ${JSON.stringify(confirmResult.body)}`,
+    ).toBe(201);
 
-    let invoiceNumber = null;
+    const invoiceNumber = confirmResult.body.invoice_number;
+
+    const openInvoicesList = async () => {
+      await loginPage.ensureLoggedIn(
+        seededCredentials.email,
+        seededCredentials.password,
+      );
+      await invoicesPage.openViaMenu();
+    };
+
     await expect
       .poll(
         async () => {
-          await invoicesPage.openViaMenu();
-          const created = (await invoicesPage.collectInvoiceNumbers()).filter(
-            (number) => !invoicesBefore.has(number),
+          await openInvoicesList();
+          return (await invoicesPage.collectInvoiceNumbers()).includes(
+            invoiceNumber,
           );
-          if (created.length > 0) {
-            invoiceNumber = created[0];
-            return invoiceNumber;
-          }
-          return null;
         },
-        { timeout: 45000 },
+        { timeout: 60000 },
       )
-      .toMatch(uiData.invoice.numberPattern);
+      .toBe(true);
 
     const invoiceDetails = await invoicesPage.getInvoiceRowDetails(invoiceNumber);
-    expect(invoiceDetails.totalAmount).toBeGreaterThan(0);
-
-    const matchedByCart = await invoicesPage.findInvoiceByTotal(cartTotal);
-    if (matchedByCart?.invoiceNumber === invoiceNumber) {
-      expect(invoiceDetails.totalAmount).toBeCloseTo(cartTotal, 2);
-    }
-
-    if (confirmResult.body?.invoice_number) {
-      expect(invoiceNumber).toBe(confirmResult.body.invoice_number);
-      expect(invoiceDetails.totalAmount).toBeCloseTo(confirmResult.body.total, 2);
-    }
+    expect(invoiceNumber).toBe(confirmResult.body.invoice_number);
+    expect(invoiceDetails.totalAmount).toBeCloseTo(confirmResult.body.total, 2);
 
     await invoicesPage.openInvoiceDetails(invoiceNumber);
     await expect(invoicesPage.page).toHaveURL(/\/account\/invoices\//);
@@ -80,11 +100,7 @@ test.describe('TC-M-02 UI-AC2 COD checkout double confirm @smoke', () => {
     await expect(invoicesPage.invoiceDetailProduct(productA)).toBeVisible();
     await expect(invoicesPage.invoiceDetailProduct(productB)).toBeVisible();
 
-    const detailAmounts = await invoicesPage.getDetailPageAmounts();
-    expect(
-      detailAmounts.some(
-        (amount) => Math.abs(amount - invoiceDetails.totalAmount) <= 0.02,
-      ),
-    ).toBe(true);
+    const detailTotal = await invoicesPage.getDetailPageTotal();
+    expect(detailTotal).toBeCloseTo(invoiceDetails.totalAmount, 2);
   });
 });
