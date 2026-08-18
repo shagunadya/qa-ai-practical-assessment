@@ -17,7 +17,7 @@ This document consolidates **known limitations** (constraints we accept) and **r
 | L-02 | **Account lockout (`423`)** after failed logins | Smoke/regression flake on `customer@…` specs | API `workers: 1`; dynamic users for auth tests; document in evidence |
 | L-03 | **Demo cart pollution** — stale line items on seeded user | Invoice total may not match current cart | New-invoice detection via `collectInvoiceNumbers()`; conditional cart-total assert |
 | L-04 | **Network / timeout** on live API | Intermittent `ETIMEDOUT` | Retry runs; serial workers |
-| L-05 | **Catalog drift** — products out of stock | Add-to-cart failures | Anchors in `exploratory-notes.md`; re-verify Combination Pliers / Pliers |
+| L-05 | **Catalog drift** — products out of stock | Add-to-cart failures | `fetchInStockProducts()` at runtime in UI checkout/regression specs |
 
 ---
 
@@ -27,7 +27,7 @@ This document consolidates **known limitations** (constraints we accept) and **r
 |----|------------|--------|
 | L-06 | **Chromium only** | No Firefox/WebKit projects in `playwright.config.js` |
 | L-07 | **No CI pipeline** | Tests run locally; no GitHub Actions workflow |
-| L-08 | **Assessment test cap** | Guideline 5–8 tests/layer; repo has **12 UI + 9 API** (21 automated specs; foundation smoke + extended regression) |
+| L-08 | **Assessment test cap** | Guideline 5–8 tests/layer; repo has **8 UI + 8 API** (16 automated specs; within cap) |
 | L-09 | **COD-only checkout** | Non-COD payment paths not covered |
 | L-10 | **Partial OpenAPI surface** | Lifecycle endpoints for confirmed flows only |
 | L-11 | **Live SUT vs docs drift** | OpenAPI status codes, billing geo-rules, UI double Confirm differ from written strategy — adjusted after live runs |
@@ -40,11 +40,10 @@ This document consolidates **known limitations** (constraints we accept) and **r
 
 | Area | Limitation | Risk | Planned / partial fix |
 |------|------------|------|------------------------|
-| TC-M-02 UI | Cart total ↔ invoice total assert conditional on clean cart | R-14 partial | Stronger when new invoice matches cart total |
-| TC-M-07 UI | Relies on `findInvoiceByTotal` | Shared state | Dynamic user in regression spec |
-| Seeded-user UI specs | Lockout under parallel workers | R-07 | Prefer dynamic users or serial runs |
-| `isCashOnDeliverySelected()` | Fallback may pass on visibility not selection | R-02 | TC-M-08 manual + regression guard |
-| Full suite green | Not all 18 tests pass on every shared-env run | D-10 | Smoke **7/7** evidenced; full suite historical 10/18 |
+| TC-M-02 UI | Cart total ↔ invoice on shared demo user | R-14 partial | API `invoice_number` + detail total assert; optional cart-total compare removed on seeded user |
+| TC-M-07 UI | Duplicate invoice rows in table | Shared state | `invoiceRowByNumber().first()` disambiguation |
+| Seeded-user UI specs | Lockout under parallel workers | R-07 | `--workers=1`; `ensureLoggedIn()` after cart clears |
+| Full suite green | **16/16 passed** on 2026-08-18 | — | See `evidence/reports/full_2026-08-18.log` |
 
 See [`traceability-matrix.md`](traceability-matrix.md) §8 for coverage gaps.
 
@@ -66,8 +65,8 @@ See [`traceability-matrix.md`](traceability-matrix.md) §8 for coverage gaps.
 |-----|--------|-------|
 | Cursor rules | **Closed** | `.cursor/rules/` — core + Playwright conventions |
 | Cursor skills | **Closed** | `.cursor/skills/` — run tests + debug |
-| Execution evidence | **Partial** | Smoke **7/7** green + HTML in `evidence/reports/`; regression/UI demo runs exported |
-| Full suite green (21/21) | **Open** | Historical full run 10/18 (predates TC-M-09–11); re-run when SUT stable |
+| Execution evidence | **Closed** | Smoke **5/5** + full **16/16** green; logs + HTML in `evidence/reports/` (2026-08-18) |
+| Full suite green (16/16) | **Closed** | `full_2026-08-18.log`, `playwright-html-report_2026-08-18_full/` |
 | CI/CD | **Open** | Out of assessment scope |
 | Cross-browser | **Open** | Out of assessment scope |
 | `.cursor/rules` in assessor brief | **Met** | See [`.cursor/README.md`](../.cursor/README.md) |

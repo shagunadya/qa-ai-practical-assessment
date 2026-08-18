@@ -4,6 +4,8 @@ Playwright UI and API test automation for the **Practice Software Testing Toolsh
 
 **Repository:** https://github.com/shagunadya/qa-ai-practical-assessment
 
+**Assessor quick links:** [`docs/README.md`](docs/README.md) (planning + strategy index) · [`evidence/reports/RUN-MANIFEST.md`](evidence/reports/RUN-MANIFEST.md) (execution evidence) · [`ai-prompts/README.md`](ai-prompts/README.md) (prompt chains) · [`project-info.md`](project-info.md) (ownership & reflection)
+
 For assessment reflection and AI usage details, see [`project-info.md`](project-info.md).
 
 ---
@@ -12,9 +14,9 @@ For assessment reflection and AI usage details, see [`project-info.md`](project-
 
 This repository delivers end-to-end QA artefacts for Toolshop v5.0:
 
-- **Manual functional tests** — [`FunctionalTestCase.csv`](FunctionalTestCase.csv) (**11 cases**, TC-M-01 … TC-M-11) · [`docs/manual-test-suite.md`](docs/manual-test-suite.md)
-- **UI automation** — Playwright + Page Object Model (**12** specs: 3 smoke + 9 regression)
-- **API automation** — Playwright `request` API (**9** specs: 4 smoke + 5 regression)
+- **Manual functional tests** — [`FunctionalTestCase.csv`](FunctionalTestCase.csv) (**8 cases**, TC-M-01 … TC-M-08) · [`docs/manual-test-suite.md`](docs/manual-test-suite.md)
+- **UI automation** — Playwright + Page Object Model (**8** specs: 2 smoke + 6 regression)
+- **API automation** — Playwright `request` API (**8** specs: 3 smoke + 5 regression)
 - **Strategy, planning & traceability** — [`docs/README.md`](docs/README.md): [`requirements-and-planning.md`](docs/requirements-and-planning.md), [`planning.md`](docs/planning.md), [`test-strategy.md`](docs/test-strategy.md), [`traceability-matrix.md`](docs/traceability-matrix.md), [`limitations-and-gaps.md`](docs/limitations-and-gaps.md)
 - **Exploratory testing record** — `exploratory-testing/exploratory-notes.md`
 - **AI-assisted workflow log** — `ai-prompts/`
@@ -46,7 +48,7 @@ The SUT is a public ecommerce practice site (registration, login, catalog, cart,
 | Positive, negative, and edge scenarios | Cross-browser beyond Chromium |
 | AI prompt history and responsible-use documentation | Full OpenAPI surface |
 
-**Test caps (assessment guideline):** 5–8 automated tests per layer (smoke + regression combined). Current counts are **12 UI + 9 API** (21 total). See [`docs/test-strategy.md`](docs/test-strategy.md) §2 and [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md) L-08.
+**Test caps (assessment guideline):** 5–8 automated tests per layer (smoke + regression combined). Current counts are **8 UI + 8 API** (16 total; **5 smoke** tagged). See [`docs/test-strategy.md`](docs/test-strategy.md) §2 and [`docs/limitations-and-gaps.md`](docs/limitations-and-gaps.md) L-08.
 
 ---
 
@@ -78,9 +80,8 @@ Log in → add two in-stock products → update quantity → checkout with **Cas
 | TC-M-06 | Single Confirm does not finalize invoice (edge) |
 | TC-M-07 | UI My Invoices matches API `GET /invoices` |
 | TC-M-08 | Cash on Delivery selected before Confirm |
-| TC-M-09 | Registration creates account with working login |
-| TC-M-10 | Logout ends authenticated session |
-| TC-M-11 | Invoice detail page verification |
+
+**Folded into smoke (not separate manual rows):** logout (TC-M-01), invoice detail verification (TC-M-02 steps) — see [`docs/traceability-matrix.md`](docs/traceability-matrix.md) §2.
 
 ---
 
@@ -105,7 +106,7 @@ qa-ai-practical-assessment/
 ├── playwright.config.js          # Playwright config (UI + API projects)
 ├── package.json                  # npm scripts
 ├── .env.example                  # Optional environment overrides
-├── FunctionalTestCase.csv        # Manual test cases (TC-M-01 … TC-M-11)
+├── FunctionalTestCase.csv        # Manual test cases (TC-M-01 … TC-M-08)
 ├── LIMITATIONS.md                # Pointer → docs/limitations-and-gaps.md
 ├── project-info.md               # Assessment summary and AI reflection
 ├── PrismStructure/
@@ -115,10 +116,10 @@ qa-ai-practical-assessment/
 │   ├── fixtures/                 # test-fixtures.js, api-fixtures.js
 │   ├── tests/
 │   │   ├── ui/
-│   │   │   ├── smoke/            # foundation, auth, checkout
-│   │   │   └── regression/       # TC-M-03 … TC-M-11
+│   │   │   ├── smoke/            # auth, checkout
+│   │   │   └── regression/       # TC-M-03 … TC-M-08
 │   │   └── api/
-│   │       ├── smoke/            # auth, auth-lifecycle, cart, products
+│   │       ├── smoke/            # auth-lifecycle, cart, products
 │   │       └── regression/       # register, login, cart, invoice, …
 │   └── reports/html/             # Generated Playwright HTML report (gitignored)
 ├── docs/

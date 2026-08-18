@@ -1,7 +1,7 @@
 # Project Info — QA AI Capability Exercise
 
 **Assessment start:** 2026-08-10  
-**Submission date:** _(fill on submit)_  
+**Submission date:** 2026-08-18  
 **Repository:** https://github.com/shagunadya/qa-ai-practical-assessment
 
 ---
@@ -21,9 +21,9 @@ This repository documents an AI-assisted QA capability assessment against **Prac
 
 **Deliverables present in the repo:**
 
-- Manual suite: `FunctionalTestCase.csv` (**11 cases**, TC-M-01 … TC-M-11)
-- UI automation: **12** Playwright specs under `PrismStructure/tests/ui/`
-- API automation: **9** Playwright specs under `PrismStructure/tests/api/`
+- Manual suite: `FunctionalTestCase.csv` (**8 cases**, TC-M-01 … TC-M-08)
+- UI automation: **8** Playwright specs under `PrismStructure/tests/ui/`
+- API automation: **8** Playwright specs under `PrismStructure/tests/api/`
 - Strategy docs: `docs/test-strategy.md`, `docs/requirements-and-planning.md`, `docs/test-data-strategy.md`, `docs/limitations-and-gaps.md`
 - Execution evidence: `evidence/reports/` (see `RUN-MANIFEST.md`)
 
@@ -76,7 +76,7 @@ npm run report         # opens PrismStructure/reports/html
 
 **npm scripts:** `test`, `test:smoke`, `test:regression`, `test:ui`, `test:api`, `report` (`package.json`).
 
-**Note:** No root `README.md` exists yet; setup is documented here and in `docs/test-strategy.md` §14.
+**Note:** Setup and run commands are in root [`README.md`](README.md) and [`docs/test-strategy.md`](test-strategy.md) §14.
 
 ---
 

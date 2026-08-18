@@ -2,7 +2,7 @@
 
 **Tool:** Cursor (Agent)  
 **Repo:** https://github.com/shagunadya/qa-ai-practical-assessment  
-**Assessment period:** 2026-08-10 — 2026-08-11
+**Assessment period:** 2026-08-10 — 2026-08-18 (latest: full suite **16/16** green — see **Chain AUTO-E** in [`automation-and-debugging.md`](automation-and-debugging.md))
 
 This folder captures **prompt → AI response → outcome → QA decision** logs with **iteration chains** (each chain refines or branches from the prior outcome).
 

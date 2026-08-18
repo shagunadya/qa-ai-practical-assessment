@@ -600,3 +600,14 @@ Attempted `git status` / `git branch -vv`; commands were interrupted. No push co
 | Git push | **Incomplete** in session |
 
 **Key lesson:** Public demo SUT behavior (UI checkout steps, API password policy, invoice geo-validation, HTTP status codes) diverged from written strategy/OpenAPI — live runs and network inspection were required to avoid false confidence.
+
+---
+
+## Chain AUTO-E — Checkout smoke + full suite green (2026-08-18)
+
+| Iteration | Prompt (summary) | AI response | Outcome | QA decision |
+|-----------|------------------|-------------|---------|-------------|
+| E1 | Fix failing `checkout.smoke` after assessment trim | Session re-login, step-aware billing, API in-stock products | Smoke 5/5 | Accept |
+| E2 | Run full suite; regression failures on static products | `fetchInStockProducts()` in UI regression specs | 14/16 | Refine |
+| E3 | Billing 422 / country code mismatch | `mapProfileToUiBilling()`, NL country normalization | 15/16 | Refine |
+| E4 | Duplicate invoice rows strict mode | `invoiceRowByNumber().first()` | **16/16** full suite | Accept — evidence in `evidence/reports/full_2026-08-18.log` |

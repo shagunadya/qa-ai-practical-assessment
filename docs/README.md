@@ -35,7 +35,7 @@ Central index for **strategy**, **scope**, **environments**, **test data**, and 
 | What is the test strategy? | Exploratory → manual → UI/API automation; risk-based caps | [`test-strategy.md`](test-strategy.md) |
 | Which environment do tests hit? | Public Toolshop practice site (UI + API); Chromium locally | [`test-environments.md`](test-environments.md) |
 | How is test data managed? | `PrismStructure/data/` + `.env`; dynamic users for isolation | [`test-data-strategy.md`](test-data-strategy.md) |
-| Where are manual cases (pos/neg/edge)? | 11 cases in CSV + readable suite doc | [`manual-test-suite.md`](manual-test-suite.md) |
+| Where are manual cases (pos/neg/edge)? | 8 cases in CSV + readable suite doc | [`manual-test-suite.md`](manual-test-suite.md) |
 | Where are functional requirements? | FR/AC baseline | [`requirements-and-planning.md`](requirements-and-planning.md) |
 | Where are limitations & gaps? | Consolidated doc | [`limitations-and-gaps.md`](limitations-and-gaps.md) |
 | Where is execution evidence? | Logs + HTML in `evidence/reports/` | [`../evidence/EXECUTION-DEMO.md`](../evidence/EXECUTION-DEMO.md) |
